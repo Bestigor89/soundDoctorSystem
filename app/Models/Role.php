@@ -42,8 +42,15 @@ class Role extends Model
         return $this->belongsToMany(Permission::class);
     }
 
+    public function getRoleBySlug(string $slug)
+    {
+        return  $this->where('title', $slug)->first();
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+
 }

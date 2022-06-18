@@ -5,6 +5,8 @@ namespace App\Http\Livewire\User;
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\User;
+use App;
+use App\Traits\Tenantable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -69,11 +71,22 @@ class Index extends Component
 
     public function render()
     {
-        $query = User::with(['roles'])->advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        if(\Auth::user()->getIsDoctor()) {
+            $query = User::with(['roles'])->whereHas('getAdditionalData', function($q){
+                $q->where('owner', '=', \Auth::user()->getDocId());
+            })->advancedFilter([
+                's' => $this->search ?: null,
+                'order_column' => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
+        }
+        if(\Auth::user()->getIsAdminAttribute()) {
+            $query = User::with(['roles'])->advancedFilter([
+                's' => $this->search ?: null,
+                'order_column' => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
+        }
 
         $users = $query->paginate($this->perPage);
 

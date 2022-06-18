@@ -1,0 +1,33 @@
+version: '3'
+services:
+    apache:
+        image: 'webdevops/php-apache-dev:8.1'
+        links:
+            - 'mysql:db'
+        ports:
+            - '80:80'
+        environment:
+            - WEB_DOCUMENT_ROOT=/app/public
+            - APPLICATION_PATH=/app
+            - php.post_max_size=500M
+            - php.upload_max_filesize=500M
+        volumes:
+            - '../:/app'
+        working_dir: /app
+    mysql:
+        image: 'mysql:latest'
+        ports:
+            - '3306:3306'
+
+        volumes:
+            - './mysql:/var/lib/mysql'
+        environment:
+            - MYSQL_ROOT_USER=root
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=test
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    node:
+        image: 'node:14-alpine'
+        volumes:
+            - '../:/app'
+        tty: true
