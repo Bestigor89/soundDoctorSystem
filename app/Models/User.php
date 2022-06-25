@@ -39,6 +39,8 @@ class User extends Authenticatable implements HasLocalePreference
         'email_verified_at',
         'roles.title',
         'locale',
+        'getAdditionalData.tel',
+        'getAdditionalData.dob',
     ];
 
     protected $casts = [

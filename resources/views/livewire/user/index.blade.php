@@ -32,8 +32,8 @@
     <div wire:loading.delay>
         Loading...
     </div>
-
-    <div class="overflow-hidden">
+{{--    {{dd($users[0]->getAdditionalData->getPhone())}}--}}
+    <div class="overflow-hidden dark">
         <div class="overflow-x-auto">
             <table class="table table-index w-full">
                 <thead>
@@ -52,17 +52,23 @@
                             {{ trans('cruds.user.fields.email') }}
                             @include('components.table.sort', ['field' => 'email'])
                         </th>
-                        <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                            @include('components.table.sort', ['field' => 'email_verified_at'])
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.user.fields.email_verified_at') }}--}}
+{{--                            @include('components.table.sort', ['field' => 'email_verified_at'])--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.user.fields.roles') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.user.fields.locale') }}
-                            @include('components.table.sort', ['field' => 'locale'])
+                        <th class="w-28">
+                            {{ trans('cruds.user.fields.phone') }}
                         </th>
+                        <th>
+                            {{ trans('cruds.user.fields.birthday') }}
+                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.user.fields.locale') }}--}}
+{{--                            @include('components.table.sort', ['field' => 'locale'])--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.user.fields.status') }}
                             @include('components.table.sort', ['field' => 'status'])
@@ -90,17 +96,19 @@
                                     {{ $user->email }}
                                 </a>
                             </td>
-                            <td>
-                                {{ $user->email_verified_at }}
-                            </td>
+{{--                            <td>--}}
+{{--                                {{ $user->email_verified_at }}--}}
+{{--                            </td>--}}
                             <td>
                                 @foreach($user->roles as $key => $entry)
                                     <span class="badge badge-relationship">{{ $entry->title }}</span>
                                 @endforeach
                             </td>
-                            <td>
-                                {{ $user->locale }}
-                            </td>
+                            <td>{{ $user->getAdditionalData->getPhone() ?? '' }}</td>
+                            <td>{{$user->getAdditionalData->getBirthdayDate()}}</td>
+{{--                            <td>--}}
+{{--                                {{ $user->locale }}--}}
+{{--                            </td>--}}
                             <td>
                                 <input class="disabled:opacity-50 disabled:cursor-not-allowed" type="checkbox" disabled {{ $user->status ? 'checked' : '' }}>
                             </td>
