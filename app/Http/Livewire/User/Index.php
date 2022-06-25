@@ -81,13 +81,12 @@ class Index extends Component
             ]);
         }
         if(\Auth::user()->getIsAdminAttribute()) {
-            $query = User::with(['roles'])->advancedFilter([
+            $query = User::with(['roles'])->with('getAdditionalData')->advancedFilter([
                 's' => $this->search ?: null,
                 'order_column' => $this->sortBy,
                 'order_direction' => $this->sortDirection,
             ]);
         }
-
         $users = $query->paginate($this->perPage);
 
         return view('livewire.user.index', compact('query', 'users'));

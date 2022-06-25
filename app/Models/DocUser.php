@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $email
@@ -63,7 +64,7 @@ class DocUser extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function docComments()
     {
@@ -71,10 +72,20 @@ class DocUser extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function docJobs()
     {
         return $this->hasMany('App\Models\DocJob', 'user_id', 'user_id');
+    }
+
+    public function getPhone(): string
+    {
+        return $this->tel ?? '';
+    }
+
+    public function getBirthdayDate(): string
+    {
+        return $this->dob ?? '';
     }
 }
