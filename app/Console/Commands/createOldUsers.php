@@ -43,14 +43,12 @@ class createOldUsers extends Command
     {
         echo "starts\n";
         $docUsers = DocUser::all();
-        foreach ($docUsers as $docUser)
-        {
+        foreach ($docUsers as $docUser) {
             /** @var DocUser $docUser */
 //            dd($docUser->);
             $user = User::where('email', $docUser->email)->first();
 //            dd($role->getRoleId("Doctor"));
-            if(empty($user))
-            {
+            if (empty($user)) {
                 /** @var User $newUser */
                 $newUser = new User();
                 $newUser->doc_user_id = $docUser->user_id;
@@ -59,20 +57,18 @@ class createOldUsers extends Command
                 $newUser->password = $newUser->setPasswordAttribute('demo1234');
                 $newUserid = $newUser->save();
 
-                if($docUser->user_type==2)
-                {
+                if ($docUser->user_type == 2) {
                     $role = new Role();
                     $newUser->roles()->sync($role->getRoleBySlug("Doctor"));
                     echo $newUser->id;
-                }else{
-                    $role= new Role();
+                } else {
+                    $role = new Role();
                     $newUser->roles()->sync($role->getRoleBySlug("User"));
                 }
                 $newUser->save();
-                if(!empty($user->email)){
-                echo $user->email.'\n';
+                if (!empty($user->email)) {
+                    echo $user->email.'\n';
                 }
-
             }
         }
         return 0;

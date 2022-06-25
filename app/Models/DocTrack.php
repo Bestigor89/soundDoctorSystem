@@ -15,14 +15,14 @@ class DocTrack extends Model
 {
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'doc_track';
 
     /**
      * The primary key for the model.
-     * 
+     *
      * @var string
      */
     protected $primaryKey = 'track_id';
@@ -31,4 +31,24 @@ class DocTrack extends Model
      * @var array
      */
     protected $fillable = ['track_name', 'track_url', 'part_id', 'duration'];
+
+    public function getTrackName(): string
+    {
+        return $this->track_name;
+    }
+
+    public function getTrackUrl(): string
+    {
+        return $this->track_url;
+    }
+
+    public function getTrackId(): string
+    {
+        return $this->track_id;
+    }
+
+    public function getDuration(): int
+    {
+        return $this->duration;
+    }
 }
