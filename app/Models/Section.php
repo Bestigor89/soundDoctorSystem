@@ -40,4 +40,9 @@ class Section extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function fileLibrary()
+    {
+        return $this->hasMany(FileLibrary::class);  //todo добавить связть с медиа файлами
+    }
 }

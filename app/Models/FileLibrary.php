@@ -60,4 +60,9 @@ class FileLibrary extends Model implements HasMedia
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function getSection()
+    {
+        return $this->belongsToMany(Section::class); // todo добавить поля для связи
+    }
 }

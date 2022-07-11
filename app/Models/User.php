@@ -118,4 +118,13 @@ class User extends Authenticatable implements HasLocalePreference
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
