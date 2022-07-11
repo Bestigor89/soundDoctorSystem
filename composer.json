@@ -18,10 +18,7 @@
         "spatie/laravel-medialibrary": "^10.0.7"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.6",
-        "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
-        "krlove/eloquent-model-generator": "^2.0",
         "laravel/dusk": "^6.22",
         "laravel/sail": "^1.0.1",
         "laravel/ui": "^3.4",

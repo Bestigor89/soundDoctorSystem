@@ -55,6 +55,16 @@
                                 {{ $fileLibrary->durations }}
                             </td>
                         </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.fileLibrary.fields.section') }}
+                            </th>
+                            <td>
+                                @foreach($fileLibrary->section as $key => $entry)
+                                    <span class="badge badge-relationship">{{ $entry->name }}</span>
+                                @endforeach
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

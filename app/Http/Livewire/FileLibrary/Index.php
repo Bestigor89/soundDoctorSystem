@@ -69,7 +69,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = FileLibrary::advancedFilter([
+        $query = FileLibrary::with(['section'])->advancedFilter([
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,

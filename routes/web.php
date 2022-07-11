@@ -12,17 +12,10 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\TaskForPatientController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\UserProfileController;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('test', function(){
-    $user = User::with('getAdditionalData')->where('id', 2)->get()->first();
-    /** @var User $user */
-    dd($user->getAdditionalData()->get()->first()->login);
-});
-
-//Route::redirect('/', '/login');
+Route::redirect('/', '/login');
 
 Auth::routes(['register' => false]);
 

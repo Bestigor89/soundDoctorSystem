@@ -2,8 +2,8 @@
 
 return [
     'userManagement' => [
-        'title'          => 'Управление пользователями',
-        'title_singular' => 'Управление пользователями',
+        'title'          => 'Пользователи',
+        'title_singular' => 'Пользователи',
     ],
     'permission' => [
         'title'          => 'Разрешения',
@@ -55,10 +55,6 @@ return [
             'password_helper'          => ' ',
             'roles'                    => 'Roles',
             'roles_helper'             => ' ',
-            'phone'                    => 'Phone',
-            'phone_helper'             => ' ',
-            'birthday'                 => 'Birthday',
-            'birthday_helper'             => ' ',
             'remember_token'           => 'Remember Token',
             'remember_token_helper'    => ' ',
             'locale'                   => 'Locale',
@@ -87,6 +83,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
+            'owner'             => 'Owner',
+            'owner_helper'      => ' ',
         ],
     ],
     'mod' => [
@@ -127,6 +125,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
+            'section'           => 'Section',
+            'section_helper'    => ' ',
         ],
     ],
     'cost' => [

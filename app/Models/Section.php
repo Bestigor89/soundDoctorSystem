@@ -4,6 +4,7 @@ namespace App\Models;
 
 use \DateTimeInterface;
 use App\Support\HasAdvancedFilter;
+use App\Traits\Tenantable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,7 @@ class Section extends Model
     use HasFactory;
     use HasAdvancedFilter;
     use SoftDeletes;
+    use Tenantable;
 
     public $table = 'sections';
 
@@ -35,6 +37,11 @@ class Section extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {
