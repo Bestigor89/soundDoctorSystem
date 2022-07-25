@@ -29,6 +29,7 @@ class FileLibrary extends Model implements HasMedia
         'id',
         'name',
         'durations',
+        'section_id'
     ];
 
     protected $appends = [
@@ -63,6 +64,6 @@ class FileLibrary extends Model implements HasMedia
 
     public function getSection()
     {
-        return $this->belongsToMany(Section::class); // todo добавить поля для связи
+        return $this->belongsToMany(Section::class, 'sections', 'id','section_id' );
     }
 }

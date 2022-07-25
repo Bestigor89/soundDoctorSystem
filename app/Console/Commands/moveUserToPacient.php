@@ -63,10 +63,11 @@ class moveUserToPacient extends Command
         $users = User::whereHas('roles', function ($q) {
             $q->where('title', 'User');
         })->get();
+//        dd($users[0]);
         /** @var User $user */
         foreach ($users as $user) {
             $temp = $user->getAdditionalData()->where('owner','=',$user->getDocId());
-            dd($temp );
+//            dd($temp );
               $patiens = new Patient();
               $patiens->user_id = $user->getId();
               $patiens->doctor_id = $user->getDocId();

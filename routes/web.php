@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\TaskForPatientController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\UserProfileController;
+use App\Http\Controllers\Admin\SeanseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // Task For Patient
     Route::resource('task-for-patients', TaskForPatientController::class, ['except' => ['store', 'update', 'destroy']]);
+
+    Route::get('seanse', [SeanseController::class , 'index']);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

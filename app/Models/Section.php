@@ -43,6 +43,8 @@ class Section extends Model
 
     public function fileLibrary()
     {
-        return $this->hasMany(FileLibrary::class);  //todo добавить связть с медиа файлами
+        return $this->hasOne(FileLibrary::class);
     }
+
+
 }

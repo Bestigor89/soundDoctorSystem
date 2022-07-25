@@ -48,6 +48,8 @@ class moveRazdel extends Command
     {
         echo "starts\n";
         DocPart::all();
+
+
         foreach (DocPart::all() as $part) {
             $section = Section::where('name', $part->part_name)->first();
             if(!$section) {
