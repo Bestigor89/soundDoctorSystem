@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 /docker/mysql/*
 /Old/mp3/*
+/docker/mysql/
