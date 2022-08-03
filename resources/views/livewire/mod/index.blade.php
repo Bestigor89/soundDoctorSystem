@@ -53,9 +53,6 @@
                             @include('components.table.sort', ['field' => 'section.name'])
                         </th>
                         <th>
-                            {{ trans('cruds.mod.fields.sound_file') }}
-                        </th>
-                        <th>
                         </th>
                     </tr>
                 </thead>
@@ -75,11 +72,6 @@
                                 @if($mod->section)
                                     <span class="badge badge-relationship">{{ $mod->section->name ?? '' }}</span>
                                 @endif
-                            </td>
-                            <td>
-                                @foreach($mod->soundFile as $key => $entry)
-                                    <span class="badge badge-relationship">{{ $entry->name }}</span>
-                                @endforeach
                             </td>
                             <td>
                                 <div class="flex justify-end">

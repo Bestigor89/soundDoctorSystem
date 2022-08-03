@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Mod;
 
-use App\Models\FileLibrary;
 use App\Models\Mod;
 use App\Models\Section;
 use Livewire\Component;
@@ -11,14 +10,11 @@ class Edit extends Component
 {
     public Mod $mod;
 
-    public array $sound_file = [];
-
     public array $listsForFields = [];
 
     public function mount(Mod $mod)
     {
-        $this->mod        = $mod;
-        $this->sound_file = $this->mod->soundFile()->pluck('id')->toArray();
+        $this->mod = $mod;
         $this->initListsForFields();
     }
 
@@ -32,7 +28,6 @@ class Edit extends Component
         $this->validate();
 
         $this->mod->save();
-        $this->mod->soundFile()->sync($this->sound_file);
 
         return redirect()->route('admin.mods.index');
     }
@@ -49,20 +44,11 @@ class Edit extends Component
                 'exists:sections,id',
                 'required',
             ],
-            'sound_file' => [
-                'required',
-                'array',
-            ],
-            'sound_file.*.id' => [
-                'integer',
-                'exists:file_libraries,id',
-            ],
         ];
     }
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['section']    = Section::pluck('name', 'id')->toArray();
-        $this->listsForFields['sound_file'] = FileLibrary::pluck('name', 'id')->toArray();
+        $this->listsForFields['section'] = Section::pluck('name', 'id')->toArray();
     }
 }

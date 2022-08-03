@@ -30,6 +30,16 @@
             {{ trans('cruds.taskForPatient.fields.mode_helper') }}
         </div>
     </div>
+    <div class="form-group {{ $errors->has('taskForPatient.status') ? 'invalid' : '' }}">
+        <input class="form-control" type="checkbox" name="status" id="status" wire:model.defer="taskForPatient.status">
+        <label class="form-label inline ml-1" for="status">{{ trans('cruds.taskForPatient.fields.status') }}</label>
+        <div class="validation-message">
+            {{ $errors->first('taskForPatient.status') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.taskForPatient.fields.status_helper') }}
+        </div>
+    </div>
 
     <div class="form-group">
         <button class="btn btn-indigo mr-2" type="submit">

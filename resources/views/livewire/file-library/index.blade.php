@@ -56,6 +56,9 @@
                             @include('components.table.sort', ['field' => 'durations'])
                         </th>
                         <th>
+                            {{ trans('cruds.fileLibrary.fields.section') }}
+                        </th>
+                        <th>
                         </th>
                     </tr>
                 </thead>
@@ -82,6 +85,11 @@
                             </td>
                             <td>
                                 {{ $fileLibrary->durations }}
+                            </td>
+                            <td>
+                                @foreach($fileLibrary->section as $key => $entry)
+                                    <span class="badge badge-relationship">{{ $entry->name }}</span>
+                                @endforeach
                             </td>
                             <td>
                                 <div class="flex justify-end">

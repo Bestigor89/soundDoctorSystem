@@ -35,6 +35,8 @@ class SectionController extends Controller
     {
         abort_if(Gate::denies('section_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $section->load('owner');
+
         return view('admin.section.show', compact('section'));
     }
 }

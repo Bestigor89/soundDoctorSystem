@@ -3,14 +3,19 @@
 namespace App\Http\Livewire\FileLibrary;
 
 use App\Models\FileLibrary;
+use App\Models\Section;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Create extends Component
 {
+    public array $section = [];
+
     public FileLibrary $fileLibrary;
 
     public array $mediaToRemove = [];
+
+    public array $listsForFields = [];
 
     public array $mediaCollections = [];
 
@@ -32,6 +37,7 @@ class Create extends Component
     {
         $this->fileLibrary            = $fileLibrary;
         $this->fileLibrary->durations = '60';
+        $this->initListsForFields();
     }
 
     public function render()
@@ -44,6 +50,7 @@ class Create extends Component
         $this->validate();
 
         $this->fileLibrary->save();
+        $this->fileLibrary->section()->sync($this->section);
         $this->syncMedia();
 
         return redirect()->route('admin.file-libraries.index');
@@ -79,6 +86,18 @@ class Create extends Component
                 'max:2147483647',
                 'required',
             ],
+            'section' => [
+                'array',
+            ],
+            'section.*.id' => [
+                'integer',
+                'exists:sections,id',
+            ],
         ];
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['section'] = Section::pluck('name', 'id')->toArray();
     }
 }

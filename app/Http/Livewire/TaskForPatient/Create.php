@@ -16,7 +16,8 @@ class Create extends Component
 
     public function mount(TaskForPatient $taskForPatient)
     {
-        $this->taskForPatient = $taskForPatient;
+        $this->taskForPatient         = $taskForPatient;
+        $this->taskForPatient->status = false;
         $this->initListsForFields();
     }
 
@@ -51,6 +52,9 @@ class Create extends Component
                 'integer',
                 'exists:mods,id',
                 'required',
+            ],
+            'taskForPatient.status' => [
+                'boolean',
             ],
         ];
     }

@@ -30,6 +30,16 @@
             {{ trans('cruds.fileLibrary.fields.durations_helper') }}
         </div>
     </div>
+    <div class="form-group {{ $errors->has('section') ? 'invalid' : '' }}">
+        <label class="form-label" for="section">{{ trans('cruds.fileLibrary.fields.section') }}</label>
+        <x-select-list class="form-control" id="section" name="section" wire:model="section" :options="$this->listsForFields['section']" multiple />
+        <div class="validation-message">
+            {{ $errors->first('section') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.fileLibrary.fields.section_helper') }}
+        </div>
+    </div>
 
     <div class="form-group">
         <button class="btn btn-indigo mr-2" type="submit">

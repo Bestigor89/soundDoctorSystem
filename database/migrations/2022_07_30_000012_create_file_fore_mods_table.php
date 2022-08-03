@@ -4,12 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaskForPatientsTable extends Migration
+class CreateFileForeModsTable extends Migration
 {
     public function up()
     {
-        Schema::create('task_for_patients', function (Blueprint $table) {
+        Schema::create('file_fore_mods', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sort_order');
             $table->timestamps();
             $table->softDeletes();
         });

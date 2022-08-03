@@ -5,18 +5,18 @@
         <div class="card-header border-b border-blueGray-200">
             <div class="card-header-container">
                 <h6 class="card-title">
-                    {{ trans('cruds.user.title_singular') }}
+                    {{ trans('cruds.fileForeMod.title_singular') }}
                     {{ trans('global.list') }}
                 </h6>
 
-                @can('user_create')
-                    <a class="btn btn-indigo" href="{{ route('admin.users.create') }}">
-                        {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
+                @can('file_fore_mod_create')
+                    <a class="btn btn-indigo" href="{{ route('admin.file-fore-mods.create') }}">
+                        {{ trans('global.add') }} {{ trans('cruds.fileForeMod.title_singular') }}
                     </a>
                 @endcan
             </div>
         </div>
-        @livewire('user.index')
+        @livewire('file-fore-mod.index')
 
     </div>
 </div>

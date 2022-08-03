@@ -142,6 +142,15 @@
                         </a>
                     </li>
                 @endcan
+                @can('file_fore_mod_access')
+                    <li class="items-center">
+                        <a class="{{ request()->is("admin/file-fore-mods*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.file-fore-mods.index") }}">
+                            <i class="fa-fw c-sidebar-nav-icon fas fa-cogs">
+                            </i>
+                            {{ trans('cruds.fileForeMod.title') }}
+                        </a>
+                    </li>
+                @endcan
 
                 @if(file_exists(app_path('Http/Controllers/Auth/UserProfileController.php')))
                     @can('auth_profile_edit')

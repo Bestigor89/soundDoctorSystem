@@ -26,7 +26,6 @@ class Mod extends Model
         'id',
         'name',
         'section.name',
-        'sound_file.name',
     ];
 
     protected $fillable = [
@@ -43,11 +42,6 @@ class Mod extends Model
     public function section()
     {
         return $this->belongsTo(Section::class);
-    }
-
-    public function soundFile()
-    {
-        return $this->belongsToMany(FileLibrary::class);
     }
 
     protected function serializeDate(DateTimeInterface $date)

@@ -29,7 +29,7 @@ class FileLibrary extends Model implements HasMedia
         'id',
         'name',
         'durations',
-        'section_id'
+        'section.name',
     ];
 
     protected $appends = [
@@ -57,13 +57,13 @@ class FileLibrary extends Model implements HasMedia
         });
     }
 
+    public function section()
+    {
+        return $this->belongsToMany(Section::class);
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function getSection()
-    {
-        return $this->belongsToMany(Section::class, 'sections', 'id','section_id' );
     }
 }
