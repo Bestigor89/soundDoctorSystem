@@ -7,10 +7,7 @@
                     <div class="hidden">
                         Copyright © <span id="get-current-year">{{ date('Y') }}</span>
                     </div>
-                    Theme <a href="https://www.creative-tim.com/product/notus-js" class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1" target="_blank">NotusJS</a> by
-                    <a href="https://www.creative-tim.com" class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1" target="_blank">
-                        Creative Tim
-                    </a>
+
                 </div>
             </div>
             <div class="w-full md:w-8/12 px-4">

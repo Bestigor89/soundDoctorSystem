@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\FileForeModController;
 use App\Http\Controllers\Admin\FileLibraryController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\ModController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -20,7 +21,7 @@ Route::redirect('/', '/login');
 
 Auth::routes(['register' => false]);
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], routes: function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // Permissions
@@ -56,6 +57,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // File Fore Mod
     Route::resource('file-fore-mods', FileForeModController::class, ['except' => ['store', 'update', 'destroy']]);
+
+    Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
+
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {
