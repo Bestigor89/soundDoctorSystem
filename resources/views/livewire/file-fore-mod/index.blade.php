@@ -8,16 +8,16 @@
                 @endforeach
             </select>
 
-            @can('user_delete')
+            @can('file_fore_mod_delete')
                 <button class="btn btn-rose ml-3 disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
                     {{ __('Delete Selected') }}
                 </button>
             @endcan
 
             @if(file_exists(app_path('Http/Livewire/ExcelExport.php')))
-                <livewire:excel-export model="User" format="csv" />
-                <livewire:excel-export model="User" format="xlsx" />
-                <livewire:excel-export model="User" format="pdf" />
+                <livewire:excel-export model="FileForeMod" format="csv" />
+                <livewire:excel-export model="FileForeMod" format="xlsx" />
+                <livewire:excel-export model="FileForeMod" format="pdf" />
             @endif
 
 
@@ -41,83 +41,70 @@
                         <th class="w-9">
                         </th>
                         <th class="w-28">
-                            {{ trans('cruds.user.fields.id') }}
+                            {{ trans('cruds.fileForeMod.fields.id') }}
                             @include('components.table.sort', ['field' => 'id'])
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.name') }}
-                            @include('components.table.sort', ['field' => 'name'])
+                            {{ trans('cruds.fileForeMod.fields.file') }}
+                            @include('components.table.sort', ['field' => 'file.name'])
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.email') }}
-                            @include('components.table.sort', ['field' => 'email'])
+                            {{ trans('cruds.fileLibrary.fields.durations') }}
+                            @include('components.table.sort', ['field' => 'file.durations'])
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                            @include('components.table.sort', ['field' => 'email_verified_at'])
+                            {{ trans('cruds.fileForeMod.fields.sort_order') }}
+                            @include('components.table.sort', ['field' => 'sort_order'])
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.roles') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.locale') }}
-                            @include('components.table.sort', ['field' => 'locale'])
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.status') }}
-                            @include('components.table.sort', ['field' => 'status'])
+                            {{ trans('cruds.fileForeMod.fields.mod') }}
+                            @include('components.table.sort', ['field' => 'mod.name'])
                         </th>
                         <th>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($users as $user)
+                    @forelse($fileForeMods as $fileForeMod)
                         <tr>
                             <td>
-                                <input type="checkbox" value="{{ $user->id }}" wire:model="selected">
+                                <input type="checkbox" value="{{ $fileForeMod->id }}" wire:model="selected">
                             </td>
                             <td>
-                                {{ $user->id }}
+                                {{ $fileForeMod->id }}
                             </td>
                             <td>
-                                {{ $user->name }}
+                                @if($fileForeMod->file)
+                                    <span class="badge badge-relationship">{{ $fileForeMod->file->name ?? '' }}</span>
+                                @endif
                             </td>
                             <td>
-                                <a class="link-light-blue" href="mailto:{{ $user->email }}">
-                                    <i class="far fa-envelope fa-fw">
-                                    </i>
-                                    {{ $user->email }}
-                                </a>
+                                @if($fileForeMod->file)
+                                    {{ $fileForeMod->file->durations ?? '' }}
+                                @endif
                             </td>
                             <td>
-                                {{ $user->email_verified_at }}
+                                {{ $fileForeMod->sort_order }}
                             </td>
                             <td>
-                                @foreach($user->roles as $key => $entry)
-                                    <span class="badge badge-relationship">{{ $entry->title }}</span>
-                                @endforeach
-                            </td>
-                            <td>
-                                {{ $user->locale }}
-                            </td>
-                            <td>
-                                <input class="disabled:opacity-50 disabled:cursor-not-allowed" type="checkbox" disabled {{ $user->status ? 'checked' : '' }}>
+                                @if($fileForeMod->mod)
+                                    <span class="badge badge-relationship">{{ $fileForeMod->mod->name ?? '' }}</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="flex justify-end">
-                                    @can('user_show')
-                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.users.show', $user) }}">
+                                    @can('file_fore_mod_show')
+                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.file-fore-mods.show', $fileForeMod) }}">
                                             {{ trans('global.view') }}
                                         </a>
                                     @endcan
-                                    @can('user_edit')
-                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.users.edit', $user) }}">
+                                    @can('file_fore_mod_edit')
+                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.file-fore-mods.edit', $fileForeMod) }}">
                                             {{ trans('global.edit') }}
                                         </a>
                                     @endcan
-                                    @can('user_delete')
-                                        <button class="btn btn-sm btn-rose mr-2" type="button" wire:click="confirm('delete', {{ $user->id }})" wire:loading.attr="disabled">
+                                    @can('file_fore_mod_delete')
+                                        <button class="btn btn-sm btn-rose mr-2" type="button" wire:click="confirm('delete', {{ $fileForeMod->id }})" wire:loading.attr="disabled">
                                             {{ trans('global.delete') }}
                                         </button>
                                     @endcan
@@ -144,7 +131,7 @@
                     {{ __('Entries selected') }}
                 </p>
             @endif
-            {{ $users->links() }}
+            {{ $fileForeMods->links() }}
         </div>
     </div>
 </div>

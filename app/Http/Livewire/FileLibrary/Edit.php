@@ -3,14 +3,19 @@
 namespace App\Http\Livewire\FileLibrary;
 
 use App\Models\FileLibrary;
+use App\Models\Section;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Edit extends Component
 {
+    public array $section = [];
+
     public FileLibrary $fileLibrary;
 
     public array $mediaToRemove = [];
+
+    public array $listsForFields = [];
 
     public array $mediaCollections = [];
 
@@ -35,7 +40,9 @@ class Edit extends Component
 
     public function mount(FileLibrary $fileLibrary)
     {
-        $this->fileLibrary      = $fileLibrary;
+        $this->fileLibrary = $fileLibrary;
+        $this->section     = $this->fileLibrary->section()->pluck('id')->toArray();
+        $this->initListsForFields();
         $this->mediaCollections = [
             'file_library_sound_file' => $fileLibrary->sound_file,
         ];
@@ -51,6 +58,7 @@ class Edit extends Component
         $this->validate();
 
         $this->fileLibrary->save();
+        $this->fileLibrary->section()->sync($this->section);
         $this->syncMedia();
 
         return redirect()->route('admin.file-libraries.index');
@@ -86,6 +94,18 @@ class Edit extends Component
                 'max:2147483647',
                 'required',
             ],
+            'section' => [
+                'array',
+            ],
+            'section.*.id' => [
+                'integer',
+                'exists:sections,id',
+            ],
         ];
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['section'] = Section::pluck('name', 'id')->toArray();
     }
 }

@@ -57,6 +57,10 @@
                             @include('components.table.sort', ['field' => 'mode.name'])
                         </th>
                         <th>
+                            {{ trans('cruds.taskForPatient.fields.status') }}
+                            @include('components.table.sort', ['field' => 'status'])
+                        </th>
+                        <th>
                         </th>
                     </tr>
                 </thead>
@@ -83,6 +87,9 @@
                                 @if($taskForPatient->mode)
                                     <span class="badge badge-relationship">{{ $taskForPatient->mode->name ?? '' }}</span>
                                 @endif
+                            </td>
+                            <td>
+                                <input class="disabled:opacity-50 disabled:cursor-not-allowed" type="checkbox" disabled {{ $taskForPatient->status ? 'checked' : '' }}>
                             </td>
                             <td>
                                 <div class="flex justify-end">

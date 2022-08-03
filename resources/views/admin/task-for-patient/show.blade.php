@@ -55,6 +55,14 @@
                                 @endif
                             </td>
                         </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.taskForPatient.fields.status') }}
+                            </th>
+                            <td>
+                                <input class="disabled:opacity-50 disabled:cursor-not-allowed" type="checkbox" disabled {{ $taskForPatient->status ? 'checked' : '' }}>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

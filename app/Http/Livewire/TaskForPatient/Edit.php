@@ -52,6 +52,9 @@ class Edit extends Component
                 'exists:mods,id',
                 'required',
             ],
+            'taskForPatient.status' => [
+                'boolean',
+            ],
         ];
     }
 
