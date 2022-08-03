@@ -8,27 +8,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class FileForeMod extends Model
 {
     use HasFactory;
     use HasAdvancedFilter;
     use SoftDeletes;
 
-    public $table = 'roles';
+    public $table = 'file_fore_mods';
 
     public $orderable = [
         'id',
-        'title',
+        'file.name',
+        'file.durations',
+        'sort_order',
+        'mod.name',
     ];
 
     public $filterable = [
         'id',
-        'title',
-        'permissions.title',
+        'file.name',
+        'file.durations',
+        'sort_order',
+        'mod.name',
     ];
 
     protected $fillable = [
-        'title',
+        'file_id',
+        'sort_order',
+        'mod_id',
     ];
 
     protected $dates = [
@@ -37,9 +44,14 @@ class Role extends Model
         'deleted_at',
     ];
 
-    public function permissions()
+    public function file()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsTo(FileLibrary::class);
+    }
+
+    public function mod()
+    {
+        return $this->belongsTo(Mod::class);
     }
 
     protected function serializeDate(DateTimeInterface $date)

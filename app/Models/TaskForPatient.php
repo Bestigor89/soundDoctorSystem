@@ -16,13 +16,6 @@ class TaskForPatient extends Model
 
     public $table = 'task_for_patients';
 
-    public $orderable = [
-        'id',
-        'pacient.name',
-        'cost.price',
-        'mode.name',
-    ];
-
     public $filterable = [
         'id',
         'pacient.name',
@@ -30,16 +23,29 @@ class TaskForPatient extends Model
         'mode.name',
     ];
 
-    protected $fillable = [
-        'pacient_id',
-        'cost_id',
-        'mode_id',
+    public $orderable = [
+        'id',
+        'pacient.name',
+        'cost.price',
+        'mode.name',
+        'status',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    protected $fillable = [
+        'pacient_id',
+        'cost_id',
+        'mode_id',
+        'status',
     ];
 
     public function pacient()

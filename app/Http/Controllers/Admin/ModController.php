@@ -35,7 +35,7 @@ class ModController extends Controller
     {
         abort_if(Gate::denies('mod_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $mod->load('section', 'soundFile');
+        $mod->load('section');
 
         return view('admin.mod.show', compact('mod'));
     }

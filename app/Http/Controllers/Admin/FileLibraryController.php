@@ -35,6 +35,8 @@ class FileLibraryController extends Controller
     {
         abort_if(Gate::denies('file_library_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $fileLibrary->load('section');
+
         return view('admin.file-library.show', compact('fileLibrary'));
     }
 

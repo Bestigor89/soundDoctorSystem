@@ -33,14 +33,11 @@ class User extends Authenticatable implements HasLocalePreference
 
     public $filterable = [
         'id',
-        'doc_user_id',
         'name',
         'email',
         'email_verified_at',
         'roles.title',
         'locale',
-        'getAdditionalData.tel',
-        'getAdditionalData.dob',
     ];
 
     protected $casts = [
@@ -72,11 +69,6 @@ class User extends Authenticatable implements HasLocalePreference
         return $this->roles()->where('title', 'Admin')->exists();
     }
 
-    public function getIsDoctor()
-    {
-        return $this->roles()->where('title', 'Doctor')->exists();
-    }
-
     public function scopeAdmins()
     {
         return $this->whereHas('roles', fn ($q) => $q->where('title', 'Admin'));
@@ -102,16 +94,6 @@ class User extends Authenticatable implements HasLocalePreference
     public function roles()
     {
         return $this->belongsToMany(Role::class);
-    }
-
-    public function getAdditionalData()
-    {
-        return $this->hasOne(DocUser::class, 'user_id', 'doc_user_id');
-    }
-
-    public function getDocId()
-    {
-        return $this->doc_user_id;
     }
 
     protected function serializeDate(DateTimeInterface $date)

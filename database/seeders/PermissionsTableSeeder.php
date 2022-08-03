@@ -218,6 +218,26 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 52,
                 'title' => 'task_for_patient_access',
             ],
+            [
+                'id'    => 53,
+                'title' => 'file_fore_mod_create',
+            ],
+            [
+                'id'    => 54,
+                'title' => 'file_fore_mod_edit',
+            ],
+            [
+                'id'    => 55,
+                'title' => 'file_fore_mod_show',
+            ],
+            [
+                'id'    => 56,
+                'title' => 'file_fore_mod_delete',
+            ],
+            [
+                'id'    => 57,
+                'title' => 'file_fore_mod_access',
+            ],
         ];
 
         Permission::insert($permissions);

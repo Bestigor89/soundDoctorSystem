@@ -2,8 +2,8 @@
 
 return [
     'userManagement' => [
-        'title'          => 'Управление пользователями',
-        'title_singular' => 'Управление пользователями',
+        'title'          => 'Пользователи',
+        'title_singular' => 'Пользователи',
     ],
     'permission' => [
         'title'          => 'Разрешения',
@@ -55,10 +55,6 @@ return [
             'password_helper'          => ' ',
             'roles'                    => 'Roles',
             'roles_helper'             => ' ',
-            'phone'                    => 'Phone',
-            'phone_helper'             => ' ',
-            'birthday'                 => 'Birthday',
-            'birthday_helper'             => ' ',
             'remember_token'           => 'Remember Token',
             'remember_token_helper'    => ' ',
             'locale'                   => 'Locale',
@@ -87,6 +83,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
+            'owner'             => 'Owner',
+            'owner_helper'      => ' ',
         ],
     ],
     'mod' => [
@@ -105,8 +103,6 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
-            'sound_file'        => 'Sound File',
-            'sound_file_helper' => ' ',
         ],
     ],
     'fileLibrary' => [
@@ -127,6 +123,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
+            'section'           => 'Section',
+            'section_helper'    => ' ',
         ],
     ],
     'cost' => [
@@ -203,6 +201,28 @@ return [
             'cost_helper'       => ' ',
             'mode'              => 'Режим',
             'mode_helper'       => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+            'status'            => 'Status',
+            'status_helper'     => ' ',
+        ],
+    ],
+    'fileForeMod' => [
+        'title'          => 'File Fore Mod',
+        'title_singular' => 'File Fore Mod',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'file'              => 'File',
+            'file_helper'       => ' ',
+            'sort_order'        => 'Sort Order',
+            'sort_order_helper' => ' ',
+            'mod'               => 'режим',
+            'mod_helper'        => ' ',
             'created_at'        => 'Created at',
             'created_at_helper' => ' ',
             'updated_at'        => 'Updated at',

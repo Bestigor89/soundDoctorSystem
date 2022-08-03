@@ -6,9 +6,9 @@
             <div class="card-header-container">
                 <h6 class="card-title">
                     {{ trans('global.view') }}
-                    {{ trans('cruds.mod.title_singular') }}:
-                    {{ trans('cruds.mod.fields.id') }}
-                    {{ $mod->id }}
+                    {{ trans('cruds.fileForeMod.title_singular') }}:
+                    {{ trans('cruds.fileForeMod.fields.id') }}
+                    {{ $fileForeMod->id }}
                 </h6>
             </div>
         </div>
@@ -19,27 +19,37 @@
                     <tbody class="bg-white">
                         <tr>
                             <th>
-                                {{ trans('cruds.mod.fields.id') }}
+                                {{ trans('cruds.fileForeMod.fields.id') }}
                             </th>
                             <td>
-                                {{ $mod->id }}
+                                {{ $fileForeMod->id }}
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                {{ trans('cruds.mod.fields.name') }}
+                                {{ trans('cruds.fileForeMod.fields.file') }}
                             </th>
                             <td>
-                                {{ $mod->name }}
+                                @if($fileForeMod->file)
+                                    <span class="badge badge-relationship">{{ $fileForeMod->file->name ?? '' }}</span>
+                                @endif
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                {{ trans('cruds.mod.fields.section') }}
+                                {{ trans('cruds.fileForeMod.fields.sort_order') }}
                             </th>
                             <td>
-                                @if($mod->section)
-                                    <span class="badge badge-relationship">{{ $mod->section->name ?? '' }}</span>
+                                {{ $fileForeMod->sort_order }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.fileForeMod.fields.mod') }}
+                            </th>
+                            <td>
+                                @if($fileForeMod->mod)
+                                    <span class="badge badge-relationship">{{ $fileForeMod->mod->name ?? '' }}</span>
                                 @endif
                             </td>
                         </tr>
@@ -47,12 +57,12 @@
                 </table>
             </div>
             <div class="form-group">
-                @can('mod_edit')
-                    <a href="{{ route('admin.mods.edit', $mod) }}" class="btn btn-indigo mr-2">
+                @can('file_fore_mod_edit')
+                    <a href="{{ route('admin.file-fore-mods.edit', $fileForeMod) }}" class="btn btn-indigo mr-2">
                         {{ trans('global.edit') }}
                     </a>
                 @endcan
-                <a href="{{ route('admin.mods.index') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.file-fore-mods.index') }}" class="btn btn-secondary">
                     {{ trans('global.back') }}
                 </a>
             </div>
