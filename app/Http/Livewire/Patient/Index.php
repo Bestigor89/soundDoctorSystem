@@ -8,6 +8,7 @@ use App\Models\Patient;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -69,12 +70,14 @@ class Index extends Component
         $this->orderable         = (new Patient())->orderable;
     }
 
-    public function render(Request $request)
+    public function render()
     {
+        $user = Auth::user();
+
         $query = Patient::with(['doctor', 'user'])
-            ->when(! $request->user()->is_admin, function (Builder $builder) use ($request) {
-                return $builder->whereHas('doctor', function (Builder $builder) use ($request) {
-                    return $builder->where('user_id', $request->user()->id);
+            ->when(! $user->is_admin, function (Builder $builder) use ($user) {
+                return $builder->whereHas('doctor', function (Builder $builder) use ($user) {
+                    return $builder->where('user_id', $user->id);
                 });
             })
             ->advancedFilter([
