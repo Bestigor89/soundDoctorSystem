@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Patient;
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -67,13 +69,19 @@ class Index extends Component
         $this->orderable         = (new Patient())->orderable;
     }
 
-    public function render()
+    public function render(Request $request)
     {
-        $query = Patient::with(['doctor', 'user'])->advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        $query = Patient::with(['doctor', 'user'])
+            ->when(! $request->user()->is_admin, function (Builder $builder) use ($request) {
+                return $builder->whereHas('doctor', function (Builder $builder) use ($request) {
+                    return $builder->where('user_id', $request->user()->id);
+                });
+            })
+            ->advancedFilter([
+                's'               => $this->search ?: null,
+                'order_column'    => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
 
         $patients = $query->paginate($this->perPage);
 

@@ -8,17 +8,16 @@ use Carbon\Carbon;
 use Hash;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements HasLocalePreference
 {
-    use HasFactory;
-    use HasAdvancedFilter;
-    use Notifiable;
-    use SoftDeletes;
+    use HasFactory,
+        HasAdvancedFilter,
+        Notifiable,
+        SoftDeletes;
 
     public $table = 'users';
 
