@@ -53,9 +53,12 @@ class Patient extends Model
         'user_id',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class, 'doctor_id', 'user_id');
+        return $this->belongsTo(Doctor::class);
     }
 
     public function user()
