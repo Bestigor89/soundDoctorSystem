@@ -210,6 +210,9 @@ return [
             'status'            => 'Status',
             'status_helper'     => ' ',
         ],
+        'actions' => [
+            'medical_procedure' => 'Медицинские процедуры',
+        ],
     ],
     'fileForeMod' => [
         'title'          => 'File Fore Mod',
