@@ -7,3 +7,5 @@
 @import "select.css";
 @import "~dropzone/dist/dropzone.css";
 @import "~flatpickr/dist/flatpickr.min.css";
+
+@import url("custom.css");

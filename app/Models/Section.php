@@ -48,9 +48,12 @@ class Section extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function fileLibrary()
     {
-        return $this->hasOne(FileLibrary::class);
+        return $this->belongsToMany(FileLibrary::class);
     }
 
 
