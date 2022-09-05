@@ -59,11 +59,6 @@ class Edit extends Component
     public $moduleList = [];
 
     /**
-     * @var Cost|null
-     */
-    public $cost = null;
-
-    /**
      * @var string|null
      */
     public $searchFile = null;
@@ -108,7 +103,7 @@ class Edit extends Component
         $this->initListsForFields();
 
         $taskForPatient->load(['mode']);
-        $taskForPatient->load(['cost', 'mode', 'mode.files', 'pacient']);
+        $taskForPatient->load(['mode', 'mode.files', 'pacient']);
         $this->taskForPatient = $taskForPatient;
         $this->mod = $taskForPatient->mode;
         $this->patient = $taskForPatient->pacient;
@@ -136,8 +131,6 @@ class Edit extends Component
     {
         $this->validate();
 
-        $cost = Cost::getActive();
-        $this->taskForPatient->cost_id = $cost->id;
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
 
