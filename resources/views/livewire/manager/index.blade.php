@@ -3,55 +3,40 @@
 
     </div>
     <div class="card-body">
-        <div class="sm:flex">
-            <div class="w-full sm:w-1/2">
-                <label for="patient" class="form-label">Patient</label>
-                <input type="text" wire:model.debounce.300ms="searchPatient" name="searchPatient" id="searchPatient" class="block w-full form-control">
-                <div class="flex justify-center items-center" wire:loading.grid wire:target="searchPatient">
-                    Loading...
-                </div>
-                @if(!blank($patientList))
-                    <div class="bg-white py-5 sm:grid sm:grid-cols-3 sm:gap-4 mt-2 w-full">
-                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                            <ul class="divide-y divide-gray-200 rounded-md border border-gray-200">
-                                @foreach($patientList as $patientItem)
-                                    <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm {{ $patientItem->id === data_get($patient, 'id') ? 'bg-green-500' : '' }}">
-                                        <div class="flex w-0 flex-1 items-center">
-                                            <span class="ml-2 w-0 flex-1 truncate">{{ $patientItem->name }}</span>
-                                        </div>
-                                        <div class="ml-4 flex-shrink-0">
-                                            @if($patientItem->id !== data_get($patient, 'id'))
-                                                <a class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
-                                                   wire:click.prevent="setPatient({{ $patientItem->id }})"
-                                                >Select patient</a>
-                                            @endif
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </dd>
-                    </div>
-                @endif
-            </div>
-            <div class="w-full sm:w-1/2">
-                <div class="ml-3 bg-white py-5 sm:gap-4 mt-1">
-                    <dd class="text-sm text-gray-900 sm:col-span-2">
-                        <div class="divide-y divide-gray-200 rounded-md border border-gray-200">
-                            <div class="flex items-center justify-between py-3 pl-3 pr-4 text-sm {{ !blank($patient) ? 'bg-green-500' : '' }}">
-                                @if(!blank($patient))
-                                    {{ $patient->name }}
-                                @else
-                                    Please select patient...
-                                @endif
-                            </div>
-                        </div>
-                    </dd>
+        <form wire:submit.prevent="submit" class="pt-3">
+            <div class="sm:flex mb-6">
+                <div class="w-full card-header-container">
+                    <a href="{{ route('admin.task-for-patients.index', ['presetPatientId' => $this->presetPatientId]) }}" class="btn btn-secondary">
+                        {{ trans('global.cancel') }}
+                    </a>
+                    <button class="btn btn-indigo mr-2" type="submit">
+                        {{ trans('global.save') }}
+                    </button>
                 </div>
             </div>
-        </div>
+            <div class="sm:flex">
+                @include('livewire.manager.blocks._patient')
+            </div>
+            <div class="sm:flex @if(blank($patient)) disabled__block @endif">
+                @include('livewire.manager.blocks._module')
+            </div>
+            <div class="sm:flex @if(!$mod->exists) disabled__block @endif">
+                @include('livewire.manager.blocks._file-list')
+            </div>
+            <div class="sm:flex mt-8 @if(!$mod->exists) disabled__block @endif">
+                @include('livewire.manager.blocks._file-sections')
+            </div>
+        </form>
+
+        @stack('forms')
     </div>
 </div>
 
 @push('scripts')
-
+    <script>
+        Livewire.on('saveModule', () => {
+            @this.set('mod.name', $('#searchModule').val());
+            $('#save__module').click();
+        });
+    </script>
 @endpush

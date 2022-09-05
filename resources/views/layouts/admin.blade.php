@@ -46,6 +46,7 @@
     </form>
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
     @livewireScripts
         @yield('scripts')
         @stack('scripts')

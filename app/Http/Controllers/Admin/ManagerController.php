@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cost;
+use App\Models\TaskForPatient;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,11 +25,16 @@ class ManagerController extends Controller
         return view('admin.manager.create');
     }
 
-    public function edit()
+    /**
+     * @param $manager
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function edit($manager)
     {
+        $taskForPatient = TaskForPatient::query()->findOrFail($manager);
 //        abort_if(Gate::denies('cost_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.manager.edit');
+        return view('admin.manager.edit', compact('taskForPatient'));
     }
 
     public function show()

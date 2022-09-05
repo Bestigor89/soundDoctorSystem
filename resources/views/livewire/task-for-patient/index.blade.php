@@ -99,7 +99,7 @@
                                         </a>
                                     @endcan
                                     @can('task_for_patient_edit')
-                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.task-for-patients.edit', $taskForPatient) }}">
+                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.manager.edit', $taskForPatient) }}">
                                             {{ trans('global.edit') }}
                                         </a>
                                     @endcan

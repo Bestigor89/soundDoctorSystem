@@ -59,6 +59,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('file-fore-mods', FileForeModController::class, ['except' => ['store', 'update', 'destroy']]);
 
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
+//    Route::get('manager', [ManagerController::class, 'index'])->name('manager.index');
+//    Route::get('manager/{id}/edit', [ManagerController::class, 'edit'])->name('manager.edit');
 
 });
 

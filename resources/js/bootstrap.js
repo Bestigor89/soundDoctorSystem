@@ -10,7 +10,8 @@ try {
     window.$ = window.jQuery = require('jquery');
     require('select2')
     window.Dropzone = require('dropzone').default
-    require('flatpickr')
+    require('sortablejs');
+    require('flatpickr');
 } catch (e) {}
 
 /**
