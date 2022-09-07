@@ -59,7 +59,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('file-fore-mods', FileForeModController::class, ['except' => ['store', 'update', 'destroy']]);
 
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
-
 });
 
 Route::group(['middleware' => ['auth', 'is_patient']], function () {

@@ -44,6 +44,21 @@ class Mod extends Model
         return $this->belongsTo(Section::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function files()
+    {
+        return $this->belongsToMany(FileLibrary::class,
+            'file_fore_mods',
+            'mod_id',
+            'file_id'
+        )
+            ->withPivot('sort_order')
+            ->orderByPivot('sort_order')
+            ->withTimestamps();
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

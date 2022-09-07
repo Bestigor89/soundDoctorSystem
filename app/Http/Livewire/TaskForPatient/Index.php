@@ -5,6 +5,7 @@ namespace App\Http\Livewire\TaskForPatient;
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\TaskForPatient;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -26,6 +27,11 @@ class Index extends Component
 
     public array $paginationOptions;
 
+    /**
+     * @var null|string
+     */
+    public $presetPatientId = null;
+
     protected $queryString = [
         'search' => [
             'except' => '',
@@ -36,6 +42,7 @@ class Index extends Component
         'sortDirection' => [
             'except' => 'desc',
         ],
+        'presetPatientId',
     ];
 
     public function getSelectedCountProperty()
@@ -69,11 +76,17 @@ class Index extends Component
 
     public function render()
     {
-        $query = TaskForPatient::with(['pacient', 'cost', 'mode'])->advancedFilter([
-            's'               => $this->search ?: null,
-            'order_column'    => $this->sortBy,
-            'order_direction' => $this->sortDirection,
-        ]);
+        $query = TaskForPatient::with(['pacient', 'cost', 'mode'])
+            ->when($this->presetPatientId, function (Builder $builder) {
+                $builder->whereHas('pacient', function (Builder $builder) {
+                    $builder->where('id', (int)$this->presetPatientId);
+                });
+            })
+            ->advancedFilter([
+                's'               => $this->search ?: null,
+                'order_column'    => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ]);
 
         $taskForPatients = $query->paginate($this->perPage);
 

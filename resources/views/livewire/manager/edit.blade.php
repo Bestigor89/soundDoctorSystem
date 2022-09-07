@@ -1,32 +1,42 @@
-<form wire:submit.prevent="submit" class="pt-3">
+<div>
+    <div class="card-header">
 
-    <div class="form-group {{ $errors->has('cost.price') ? 'invalid' : '' }}">
-        <label class="form-label required" for="price">{{ trans('cruds.cost.fields.price') }}</label>
-        <input class="form-control" type="number" name="price" id="price" required wire:model.defer="cost.price" step="0.01">
-        <div class="validation-message">
-            {{ $errors->first('cost.price') }}
-        </div>
-        <div class="help-block">
-            {{ trans('cruds.cost.fields.price_helper') }}
-        </div>
     </div>
-    <div class="form-group {{ $errors->has('cost.status') ? 'invalid' : '' }}">
-        <input class="form-control" type="checkbox" name="status" id="status" wire:model.defer="cost.status">
-        <label class="form-label inline ml-1" for="status">{{ trans('cruds.cost.fields.status') }}</label>
-        <div class="validation-message">
-            {{ $errors->first('cost.status') }}
-        </div>
-        <div class="help-block">
-            {{ trans('cruds.cost.fields.status_helper') }}
-        </div>
-    </div>
+    <div class="card-body">
+        <form wire:submit.prevent="submit" class="pt-3">
+            <div class="sm:flex mb-6">
+                <div class="w-full card-header-container">
+                    <a href="{{ route('admin.task-for-patients.index', ['presetPatientId' => $this->presetPatientId]) }}" class="btn btn-secondary">
+                        {{ trans('global.cancel') }}
+                    </a>
+                    <button class="btn btn-indigo mr-2" type="submit">
+                        {{ trans('global.save') }}
+                    </button>
+                </div>
+            </div>
+            <div class="sm:flex">
+                @include('livewire.manager.blocks._patient')
+            </div>
+            <div class="sm:flex @if(blank($patient)) disabled__block @endif">
+                @include('livewire.manager.blocks._module')
+            </div>
+            <div class="sm:flex @if(!$mod->exists) disabled__block @endif">
+                @include('livewire.manager.blocks._file-list')
+            </div>
+            <div class="sm:flex mt-8 @if(!$mod->exists) disabled__block @endif">
+                @include('livewire.manager.blocks._file-sections')
+            </div>
+        </form>
 
-    <div class="form-group">
-        <button class="btn btn-indigo mr-2" type="submit">
-            {{ trans('global.save') }}
-        </button>
-        <a href="{{ route('admin.costs.index') }}" class="btn btn-secondary">
-            {{ trans('global.cancel') }}
-        </a>
+        @stack('forms')
     </div>
-</form>
+</div>
+
+@push('scripts')
+    <script>
+        Livewire.on('saveModule', () => {
+        @this.set('mod.name', $('#searchModule').val());
+            $('#save__module').click();
+        });
+    </script>
+@endpush

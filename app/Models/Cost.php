@@ -42,6 +42,15 @@ class Cost extends Model
         'deleted_at',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|Model|object|null
+     */
+    public static function getActive()
+    {
+        return self::query()->where('status', true)
+            ->first();
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

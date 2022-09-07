@@ -10,7 +10,7 @@
                 </h6>
 
                 @can('task_for_patient_create')
-                    <a class="btn btn-indigo" href="{{ route('admin.task-for-patients.create') }}">
+                    <a class="btn btn-indigo" href="{{ route('admin.manager.index', ['presetPatientId' => request()->input('presetPatientId')]) }}">
                         {{ trans('global.add') }} {{ trans('cruds.taskForPatient.title_singular') }}
                     </a>
                 @endcan
