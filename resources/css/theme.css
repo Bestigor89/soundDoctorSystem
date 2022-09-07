@@ -231,3 +231,23 @@ textarea.form-control {
 {
     min-width: 1.25rem;
 }
+
+.label-floating input:not(:placeholder-shown) {
+    padding-top: 1.4rem;
+}
+
+.label-floating input:not(:placeholder-shown) ~ label {
+    padding-top: 0.4rem;
+    font-size: 0.7rem;
+    transition: all 0.1s ease-in-out;
+    color: #8795a1;
+}
+
+.auth__form input {
+    font-size: inherit;
+    border-width: inherit;
+}
+
+.auth__form .label-floating.has-error {
+    border-color: red;
+}

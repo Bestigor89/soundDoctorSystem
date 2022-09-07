@@ -65,7 +65,7 @@ class User extends Authenticatable implements HasLocalePreference
 
     public function getIsAdminAttribute()
     {
-        return $this->roles()->where('title', 'Admin')->exists();
+        return $this->roles->where('title', 'Admin')->exists();
     }
 
     public function scopeAdmins()
@@ -93,6 +93,14 @@ class User extends Authenticatable implements HasLocalePreference
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
     }
 
     protected function serializeDate(DateTimeInterface $date)

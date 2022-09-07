@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
-Auth::routes(['register' => false]);
+Auth::routes();
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], routes: function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -60,6 +60,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
 
+});
+
+Route::group(['middleware' => ['auth', 'is_patient']], function () {
+    Route::get('patient', [PatientController::class, 'index']);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {
