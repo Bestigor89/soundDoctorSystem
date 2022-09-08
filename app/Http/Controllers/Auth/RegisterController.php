@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -68,11 +69,14 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        Patient::create([
+        $user->role()->attach(Role::byTitle(Role::TITLE_PATIENT)->id);
+
+        $user->patient()->create([
             'name' => $data['name'],
             'phone' => $data['phone'],
-            'user_id' => $user->id,
             'status' => true,
         ]);
+
+        return $user;
     }
 }

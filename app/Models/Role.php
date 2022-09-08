@@ -14,6 +14,10 @@ class Role extends Model
     use HasAdvancedFilter;
     use SoftDeletes;
 
+    const TITLE_ADMIN = 'Admin';
+    const TITLE_PATIENT = 'Patient';
+    const TITLE_DOCTOR = 'Doctor';
+
     public $table = 'roles';
 
     public $orderable = [
@@ -36,6 +40,15 @@ class Role extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * @param string $title
+     * @return \Illuminate\Database\Eloquent\Builder|Model|object|null
+     */
+    public static function byTitle(string $title)
+    {
+        return self::query()->where('title', $title)->first();
+    }
 
     public function permissions()
     {

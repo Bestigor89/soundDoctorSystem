@@ -65,7 +65,7 @@ class User extends Authenticatable implements HasLocalePreference
 
     public function getIsAdminAttribute()
     {
-        return $this->roles->where('title', 'Admin')->exists();
+        return $this->roles->where('title', 'Admin');
     }
 
     public function scopeAdmins()
@@ -76,6 +76,15 @@ class User extends Authenticatable implements HasLocalePreference
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @param ...$roles
+     * @return mixed
+     */
+    public function hasRole(...$roles)
+    {
+        return $this->roles->whereIn('title', head($roles))->isNotEmpty();
     }
 
     public function getEmailVerifiedAtAttribute($value)
