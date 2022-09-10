@@ -3,10 +3,6 @@
         <img src="https://stitches.hyperyolo.com/images/logo.png" class="h-10 sm:h-10 rounded-full" alt="logo">
     </a>
     <ul class="text-sm text-gray-700 list-none p-0 flex items-center">
-        <li><a href="#" class="inline-block py-2 px-3 text-gray-900 hover:text-gray-700 no-underline">Products</a></li>
-        <li><a href="#" class="inline-block py-2 px-3 text-gray-900 hover:text-gray-700 no-underline">Pricing</a></li>
-        <li class="pr-2"><a href="#"
-                            class="inline-block py-2 px-3 text-gray-900 hover:text-gray-700 no-underline">FAQs</a></li>
         <li class="pl-2 border-l"><a href="{{ route('login') }}"
                                      class="inline-block py-2 px-3 text-gray-900 hover:text-gray-700 no-underline">Log In</a></li>
         @if(Route::has('register'))
