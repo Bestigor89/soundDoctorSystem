@@ -7,19 +7,46 @@ use Illuminate\Database\Seeder;
 
 class RolesTableSeeder extends Seeder
 {
+    /**
+     * @return void
+     */
     public function run()
     {
-        $roles = [
+        foreach ($this->getItems() as $item) {
+            if ($this->exists($item)) {
+                continue;
+            }
+
+            Role::factory()->create($item);
+
+            $this->command->line(__(' - The role with title :title created', $item));
+        }
+    }
+
+    /**
+     * @param array $item
+     * @return bool
+     */
+    protected function exists(array $item)
+    {
+        return Role::query()->where('title', data_get($item, 'title'))->exists();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getItems()
+    {
+        return [
             [
-                'id'    => 1,
                 'title' => 'Admin',
             ],
             [
-                'id'    => 2,
-                'title' => 'User',
+                'title' => 'Patient',
+            ],
+            [
+                'title' => 'Doctor',
             ],
         ];
-
-        Role::insert($roles);
     }
 }

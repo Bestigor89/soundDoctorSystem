@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
-Auth::routes(['register' => false]);
+Auth::routes();
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], routes: function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'has_role:Admin,Doctor']], routes: function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // Permissions
@@ -59,6 +59,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('file-fore-mods', FileForeModController::class, ['except' => ['store', 'update', 'destroy']]);
 
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
+});
+
+Route::group(['middleware' => ['auth', 'has_role:Patient']], function () {
+    Route::get('patient', [PatientController::class, 'index']);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

@@ -31,6 +31,8 @@
  * Date: 2021-03-02T17:08Z
  */
 
+/*! Sortable 1.15.0 - MIT | git://github.com/SortableJS/Sortable.git */
+
 /**
  * @license
  * Lodash <https://lodash.com/>

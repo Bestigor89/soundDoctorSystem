@@ -36,6 +36,15 @@ class Permission extends Model
         'deleted_at',
     ];
 
+    /**
+     * @param string $title
+     * @return \Illuminate\Database\Eloquent\Builder|Model|object|null
+     */
+    public static function byTitle(string $title)
+    {
+        return self::query()->where('title', $title)->first();
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

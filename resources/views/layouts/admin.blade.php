@@ -11,7 +11,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
     @livewireStyles
-        @stack('styles')
+    @stack('styles')
 </head>
 
 <body class="text-blueGray-800 antialiased">
