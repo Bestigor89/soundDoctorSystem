@@ -127,7 +127,7 @@ class Index extends Component
     {
         $this->initListsForFields();
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
-        $this->sectionFiles = $this->section->fileLibrary;
+        $this->sectionFiles = $this->section ? $this->section->fileLibrary : null;
     }
 
     /**
