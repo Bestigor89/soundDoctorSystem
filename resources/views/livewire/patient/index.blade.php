@@ -112,13 +112,8 @@
                             <td>
                                 <div class="flex justify-end">
                                     @can('task_for_patient_create')
-                                        <a class="btn btn-sm btn-indigo mr-2" href="{{ route('admin.task-for-patients.index', ['presetPatientId' => $patient]) }}">
+                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.task-for-patients.index', ['presetPatientId' => $patient]) }}">
                                             {{ trans('cruds.taskForPatient.actions.medical_procedure') }}
-                                        </a>
-                                    @endcan
-                                    @can('patient_show')
-                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.patients.show', $patient) }}">
-                                            {{ trans('global.view') }}
                                         </a>
                                     @endcan
                                     @can('patient_edit')
