@@ -211,7 +211,7 @@ return [
             'status_helper'     => ' ',
         ],
         'actions' => [
-            'medical_procedure' => 'Медицинские процедуры',
+            'medical_procedure' => 'Задание',
         ],
     ],
     'fileForeMod' => [
