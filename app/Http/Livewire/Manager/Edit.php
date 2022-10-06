@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Manager;
 
+use App\Http\Livewire\WithSorting;
 use App\Models\Cost;
+use App\Models\FileForeMod;
 use App\Models\FileLibrary;
 use App\Models\Mod;
 use App\Models\Patient;
@@ -14,6 +16,8 @@ use Livewire\Component;
 
 class Edit extends Component
 {
+    use WithSorting;
+
     public Mod $mod;
 
     public TaskForPatient $taskForPatient;
@@ -74,6 +78,11 @@ class Edit extends Component
     public $sectionFiles = [];
 
     /**
+     * @var int
+     */
+    public $fileDurations = 0;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -85,6 +94,7 @@ class Edit extends Component
      */
     protected $listeners = [
         'orderChanged',
+        'updatedFileDuration',
     ];
 
     /**
@@ -93,6 +103,7 @@ class Edit extends Component
     protected $rules = [
         'mod.id' => ['required', 'exists:mods,id'],
         'patient.id' => ['required', 'exists:patients,id'],
+        'fileForMod.duration' => ['required', 'integer', 'min:0'],
     ];
 
     /**
@@ -102,11 +113,11 @@ class Edit extends Component
     {
         $this->initListsForFields();
 
-        $taskForPatient->load(['mode']);
         $taskForPatient->load(['mode', 'mode.files', 'pacient']);
         $this->taskForPatient = $taskForPatient;
         $this->mod = $taskForPatient->mode;
         $this->patient = $taskForPatient->pacient;
+        $this->updateFileDurations();
     }
 
     /**
@@ -117,6 +128,7 @@ class Edit extends Component
         $this->initListsForFields();
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
         $this->sectionFiles = $this->section->fileLibrary;
+        $this->updateFileDurations();
     }
 
     public function render()
@@ -251,6 +263,20 @@ class Edit extends Component
     }
 
     /**
+     * @param FileForeMod $fileForeMod
+     * @param $duration
+     */
+    public function updatedFileDuration(FileForeMod $fileForeMod, $duration)
+    {
+        $fileForeMod->fill([
+            'durations' => $duration,
+        ])->save();
+
+        $this->mod->load('files');
+        $this->updateFileDurations();
+    }
+
+    /**
      * @param Section $section
      * @return void
      */
@@ -273,6 +299,7 @@ class Edit extends Component
             'sort_order' => 0,
         ]);
         $this->mod->load('files');
+        $this->updateFileDurations();
     }
 
     /**
@@ -284,6 +311,7 @@ class Edit extends Component
         $this->mod->files()->detach($fileLibrary);
 
         $this->mod->load('files');
+        $this->updateFileDurations();
     }
 
     /**
@@ -315,5 +343,15 @@ class Edit extends Component
                 $builder->where('owner_id', $user->id);
             })
             ->get();
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateFileDurations()
+    {
+        $this->fileDurations = $this->mod->files->sum(function (FileLibrary $fileLibrary) {
+            return $fileLibrary->pivot->durations ?? $fileLibrary->durations;
+        });
     }
 }
