@@ -8,7 +8,7 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
-    require('select2')
+    require('select2');
     window.Dropzone = require('dropzone').default
     window.Sortable = require('sortablejs/Sortable.min');
     require('flatpickr');

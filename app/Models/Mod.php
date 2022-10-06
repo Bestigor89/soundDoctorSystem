@@ -54,7 +54,7 @@ class Mod extends Model
             'mod_id',
             'file_id'
         )
-            ->withPivot('sort_order')
+            ->withPivot(['sort_order', 'durations', 'id'])
             ->orderByPivot('sort_order')
             ->withTimestamps();
     }

@@ -12,3 +12,8 @@
     background-color: rgba(255,255,255,0.5);
     cursor: not-allowed;
 }
+
+.file__duration__input {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}

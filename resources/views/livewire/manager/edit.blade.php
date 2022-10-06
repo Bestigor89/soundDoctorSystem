@@ -38,5 +38,10 @@
         @this.set('mod.name', $('#searchModule').val());
             $('#save__module').click();
         });
+
+        Livewire.on('fileDurationChanged', (id) => {
+            let duration = $('#fileDuration-' + id).val();
+            Livewire.emit('updatedFileDuration', id, duration);
+        });
     </script>
 @endpush

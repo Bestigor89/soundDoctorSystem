@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Manager;
 
 use App\Http\Livewire\WithSorting;
 use App\Models\Cost;
+use App\Models\FileForeMod;
 use App\Models\FileLibrary;
 use App\Models\Mod;
 use App\Models\Patient;
@@ -82,6 +83,11 @@ class Index extends Component
     public $sectionFiles = [];
 
     /**
+     * @var int
+     */
+    public $fileDurations = 0;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -93,6 +99,7 @@ class Index extends Component
      */
     protected $listeners = [
         'orderChanged',
+        'updatedFileDuration',
     ];
 
     /**
@@ -118,6 +125,7 @@ class Index extends Component
         $this->mod = $mod;
         $this->taskForPatient = $taskForPatient;
         $this->cost = Cost::getActive();
+        $this->updateFileDurations();
     }
 
     /**
@@ -128,6 +136,7 @@ class Index extends Component
         $this->initListsForFields();
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
         $this->sectionFiles = $this->section ? $this->section->fileLibrary : null;
+        $this->updateFileDurations();
     }
 
     /**
@@ -247,6 +256,7 @@ class Index extends Component
         $this->mod = $mod;
         $this->moduleList = [];
         $this->searchModule = null;
+        $this->updateFileDurations();
     }
 
     /**
@@ -287,6 +297,7 @@ class Index extends Component
             'sort_order' => 0,
         ]);
         $this->mod->load('files');
+        $this->updateFileDurations();
     }
 
     /**
@@ -298,6 +309,7 @@ class Index extends Component
         $this->mod->files()->detach($fileLibrary);
 
         $this->mod->load('files');
+        $this->updateFileDurations();
     }
 
     /**
@@ -317,6 +329,20 @@ class Index extends Component
     }
 
     /**
+     * @param FileForeMod $fileForeMod
+     * @param $duration
+     */
+    public function updatedFileDuration(FileForeMod $fileForeMod, $duration)
+    {
+        $fileForeMod->fill([
+            'durations' => $duration,
+        ])->save();
+
+        $this->mod->load('files');
+        $this->updateFileDurations();
+    }
+
+    /**
      * @return void
      */
     protected function initListsForFields(): void
@@ -329,5 +355,15 @@ class Index extends Component
                 $builder->where('owner_id', $user->id);
             })
             ->get();
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateFileDurations()
+    {
+        $this->fileDurations = $this->mod->files->sum(function (FileLibrary $fileLibrary) {
+            return $fileLibrary->pivot->durations ?? $fileLibrary->durations;
+        });
     }
 }
