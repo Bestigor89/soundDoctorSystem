@@ -209,6 +209,7 @@ return [
             'deleted_at_helper' => ' ',
             'status'            => 'Status',
             'status_helper'     => ' ',
+            'date_start' => 'Дата начала',
         ],
         'actions' => [
             'medical_procedure' => 'Задание',

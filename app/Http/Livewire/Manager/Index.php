@@ -9,6 +9,7 @@ use App\Models\Mod;
 use App\Models\Patient;
 use App\Models\Section;
 use App\Models\TaskForPatient;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -82,6 +83,11 @@ class Index extends Component
     public $sectionFiles = [];
 
     /**
+     * @var Carbon|null
+     */
+    public $date_start;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -102,6 +108,7 @@ class Index extends Component
         'mod.id' => ['required', 'exists:mods,id'],
         'patient.id' => ['required', 'exists:patients,id'],
         'mod.name' => ['required'],
+        'date_start' => ['required', 'date', 'after:now'],
     ];
 
     /**
@@ -117,6 +124,7 @@ class Index extends Component
 
         $this->mod = $mod;
         $this->taskForPatient = $taskForPatient;
+        $this->date_start = now_in_base_time_zone();
         $this->cost = Cost::getActive();
     }
 
@@ -149,6 +157,7 @@ class Index extends Component
         $this->taskForPatient->cost_id = $cost->id;
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
+        $this->taskForPatient->date_start = display_date_to_system($this->date_start);
 
         $this->taskForPatient->save();
 

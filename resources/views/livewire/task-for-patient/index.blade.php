@@ -57,7 +57,11 @@
                             @include('components.table.sort', ['field' => 'mode.name'])
                         </th>
                         <th>
-                            {{ trans('cruds.taskForPatient.fields.status') }}
+                            {{ trans('cruds.taskForPatient.fields.mode') }}
+                            @include('components.table.sort', ['field' => 'mode.name'])
+                        </th>
+                        <th>
+                            {{ trans('cruds.taskForPatient.fields.date_start') }}
                             @include('components.table.sort', ['field' => 'status'])
                         </th>
                         <th>
@@ -90,6 +94,9 @@
                             </td>
                             <td>
                                 <input class="disabled:opacity-50 disabled:cursor-not-allowed" type="checkbox" disabled {{ $taskForPatient->status ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                {{ system_datetime_to_display($taskForPatient->date_start) }}
                             </td>
                             <td>
                                 <div class="flex justify-end">

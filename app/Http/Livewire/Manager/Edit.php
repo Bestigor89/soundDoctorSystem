@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Manager;
 
-use App\Models\Cost;
 use App\Models\FileLibrary;
 use App\Models\Mod;
 use App\Models\Patient;
 use App\Models\Section;
 use App\Models\TaskForPatient;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -74,6 +74,11 @@ class Edit extends Component
     public $sectionFiles = [];
 
     /**
+     * @var Carbon|null
+     */
+    public $date_start;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -93,6 +98,7 @@ class Edit extends Component
     protected $rules = [
         'mod.id' => ['required', 'exists:mods,id'],
         'patient.id' => ['required', 'exists:patients,id'],
+        'date_start' => ['required', 'date', 'after:now'],
     ];
 
     /**
@@ -107,6 +113,7 @@ class Edit extends Component
         $this->taskForPatient = $taskForPatient;
         $this->mod = $taskForPatient->mode;
         $this->patient = $taskForPatient->pacient;
+        $this->date_start = system_datetime_to_display($taskForPatient->date_start);
     }
 
     /**
@@ -133,6 +140,7 @@ class Edit extends Component
 
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
+        $this->taskForPatient->date_start = display_date_to_system($this->date_start);
 
         $this->taskForPatient->save();
 

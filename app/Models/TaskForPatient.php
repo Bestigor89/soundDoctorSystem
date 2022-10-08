@@ -33,12 +33,14 @@ class TaskForPatient extends Model
 
     protected $casts = [
         'status' => 'boolean',
+        'date_start' => 'datetime',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
+        'date_start',
     ];
 
     protected $fillable = [
@@ -46,6 +48,7 @@ class TaskForPatient extends Model
         'cost_id',
         'mode_id',
         'status',
+        'date_start',
     ];
 
     public function pacient()
