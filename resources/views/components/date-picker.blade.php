@@ -33,7 +33,7 @@
 
 @if($attributes['picker'] === 'date')
         let el = flatpickr('.flatpickr-{{ $attributes['id'] }}', {
-            dateFormat: "{{ config('project.flatpickr_date_format') }}",
+            dateFormat: "{{ config('admin.flatpickr.datetime') }}",
             wrap: true,
             onChange: (SelectedDates, DateStr, instance) => {
                 update(DateStr)
@@ -49,7 +49,7 @@
             noCalendar: true,
             time_24hr: true,
             wrap: true,
-            dateFormat: "{{ config('project.flatpickr_time_format') }}",
+            dateFormat: "{{ config('admin.flatpickr.datetime') }}",
             onChange: (SelectedDates, DateStr, instance) => {
                 update(DateStr)
             },
@@ -63,7 +63,7 @@
             time_24hr: true,
             wrap: true,
             // enableSeconds: true,
-            dateFormat: "{{ config('project.flatpickr_datetime_format') }}",
+            dateFormat: "{{ config('admin.flatpickr.datetime') }}",
             onChange: (SelectedDates, DateStr, instance) => {
                 update(DateStr)
             },

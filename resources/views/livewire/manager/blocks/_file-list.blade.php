@@ -18,11 +18,12 @@
                         <div class="flex w-0 flex-1 items-center">
                             <span class="ml-2 w-0 flex-1 truncate mt-1 mb-1">
                                 {{ $file->name }} -
-                                <input type="text"
+                                <input type="number"
                                        value="{{ $file->pivot->durations ?? $file->durations }}"
                                        id="fileDuration-{{ $file->pivot->id }}"
                                        name="fileDuration-{{ $file->pivot->id }}"
                                        class="inline-block w-20 form-control file__duration__input"
+                                       min="0"
                                 />
                                 <a class="btn btn-sm btn-info mr-2"
                                     wire:click.prevent="$emit('fileDurationChanged', {{ $file->pivot->id }})"
