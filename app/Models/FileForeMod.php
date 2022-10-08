@@ -36,6 +36,7 @@ class FileForeMod extends Model
         'file_id',
         'sort_order',
         'mod_id',
+        'durations',
     ];
 
     protected $dates = [

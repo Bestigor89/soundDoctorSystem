@@ -17,11 +17,3 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
-
-Artisan::command('fix-roles-table', function () {
-    $role = \App\Models\Role::query()->where('title', 'User')->first();
-
-    $role->fill([
-        'title' => 'Doctor',
-    ])->save();
-});
