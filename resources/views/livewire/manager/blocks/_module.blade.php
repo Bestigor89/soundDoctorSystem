@@ -62,8 +62,6 @@
         </dd>
     </div>
     @if($patient->tasks)
-        <div class="sm:flex">
-            @include('livewire.manager.blocks._tasks-for-patient')
-        </div>
+        @include('livewire.manager.blocks._tasks-for-patient')
     @endif
 </div>

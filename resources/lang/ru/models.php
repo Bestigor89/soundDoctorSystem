@@ -23,6 +23,12 @@ return [
         ],
     ],
 
+    'task_for_patient' => [
+        'labels' => [
+            'list' => 'Предыдущие процедуры',
+        ],
+    ],
+
     'file_for_mods' => [
         'labels' => [
             'label' => 'Список файлов для модуля',
