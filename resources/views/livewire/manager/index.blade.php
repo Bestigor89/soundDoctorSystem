@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sm:flex">
+            <div class="w-full">
                 @include('livewire.manager.blocks._patient')
             </div>
             <div class="sm:flex @if(blank($patient)) disabled__block @endif">

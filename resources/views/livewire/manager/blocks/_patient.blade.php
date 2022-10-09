@@ -28,7 +28,7 @@
     @endif
 </div>
 <div class="w-full sm:w-1/2">
-    <div class="ml-3 bg-white py-5 sm:gap-4 mt-1">
+    <div class="bg-white py-5 sm:gap-4 mt-1">
         <dd class="text-sm text-gray-900 sm:col-span-2 form-group {{ $errors->has('patient.id') ? 'invalid' : '' }}">
             <div class="divide-y divide-gray-200 rounded-md border border-gray-200">
                 <div class="flex py-3 pl-3 pr-4 text-sm">
