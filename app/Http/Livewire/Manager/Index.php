@@ -19,6 +19,8 @@ class Index extends Component
 {
     use WithSorting;
 
+    const MODULE_COUNT = 10;
+
     public Mod $mod;
 
     public TaskForPatient $taskForPatient;
@@ -130,6 +132,9 @@ class Index extends Component
         }
 
         $this->mod = $mod;
+        if (! $this->mod->exists) {
+            $this->moduleList = Mod::query()->latest()->take(self::MODULE_COUNT)->get();
+        }
         $this->taskForPatient = $taskForPatient;
         $this->date_start = now_in_base_time_zone();
         $this->cost = Cost::getActive();
@@ -142,6 +147,9 @@ class Index extends Component
     public function booted()
     {
         $this->initListsForFields();
+        if (! $this->mod->exists) {
+            $this->moduleList = Mod::query()->latest()->take(self::MODULE_COUNT)->get();
+        }
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
         $this->sectionFiles = $this->section ? $this->section->fileLibrary : null;
         $this->updateFileDurations();
