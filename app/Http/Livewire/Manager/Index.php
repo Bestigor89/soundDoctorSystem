@@ -247,8 +247,10 @@ class Index extends Component
                 'order_column' => $this->sortBy,
                 'order_direction' => $this->sortDirection,
             ])
-            ->whereHas('section', function (Builder $builder) {
-                return $builder->where('id', $this->section->id);
+            ->when($this->section->exists, function (Builder $builder) {
+                $builder->whereHas('section', function (Builder $builder) {
+                    return $builder->where('id', $this->section->id);
+                });
             })
             ->get();
     }
@@ -259,6 +261,7 @@ class Index extends Component
      */
     public function setPatient(Patient $patient)
     {
+        $patient->load('tasks');
         $this->patient = $patient;
         $this->patientList = [];
         $this->searchPatient = null;
@@ -292,15 +295,15 @@ class Index extends Component
     }
 
     /**
-     * @param Section $section
+     * @param Section|null $section
      * @return void
      */
-    public function setSection(Section $section)
+    public function setSection(Section $section = null)
     {
         $section->load('fileLibrary');
 
         $this->section = $section;
-        $this->sectionFiles = $section->fileLibrary;
+        $this->sectionFiles = $section->exists ? $section->fileLibrary : FileLibrary::query()->get();
         $this->searchFile = null;
     }
 

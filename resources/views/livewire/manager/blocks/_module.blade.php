@@ -41,6 +41,7 @@
             {{ trans('models.mod.actions.create') }}
         </button>
     @endif
+
 </div>
 <div class="w-full sm:w-1/2">
     <div class="ml-3 bg-white py-5 sm:gap-4 mt-1">
@@ -60,4 +61,7 @@
             </div>
         </dd>
     </div>
+    @if($patient->tasks)
+        @include('livewire.manager.blocks._tasks-for-patient')
+    @endif
 </div>

@@ -5,6 +5,10 @@
             wire:click.prevent="setSection({{ $sectionItem->id }})"
         >{{ $sectionItem->name }}</button>
     @endforeach
+    <button
+        class="btn btn-secondary @if(!$section->exists) btn-success @endif"
+        wire:click.prevent="setSection()"
+    >All</button>
     @if (! blank($sectionFiles))
         <div class="bg-white py-5 sm:grid sm:grid-cols-3 sm:gap-4 mt-2 w-full">
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
