@@ -19,11 +19,20 @@
                 <livewire:excel-export model="FileLibrary" format="xlsx" />
                 <livewire:excel-export model="FileLibrary" format="pdf" />
             @endif
-
-
-
-
         </div>
+        @if (isset($sections) && $sections->isNotEmpty())
+        <div class="w-full sm:w-1/2">
+            <div class="form-group">
+                <label class="form-label" for="name">@lang('cruds.section.title_singular')</label>
+                @foreach($sections as $name => $id)
+                    <a href="{{ route('admin.file-libraries.index', ['section' => $id]) }}" class="btn @if(request()->get('section') === $id) btn-info @else btn-secondary @endif">{{ $name }}</a>
+                @endforeach
+                @if (request()->has('section'))
+                <a href="{{ route('admin.file-libraries.index') }}" class="btn btn-rose">@lang('global.clear')</a>
+                @endif
+            </div>
+        </div>
+        @endif
         <div class="w-full sm:w-1/2 sm:text-right">
             Search:
             <input type="text" wire:model.debounce.300ms="search" class="w-full sm:w-1/3 inline-block" />
