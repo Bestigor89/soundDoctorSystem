@@ -108,8 +108,8 @@ return [
     'url'         => 'Поле :attribute имеет неверный формат',
     'uuid'        => 'Поле :attribute должен быть UUID.',
     'custom'      => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'mod' => [
+            'name' => 'Модуль с ID :id уже существует.',
         ],
     ],
     'reserved_word'                  => 'Поле :attribute содержит зарезервированное слово',

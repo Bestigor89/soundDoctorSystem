@@ -20,6 +20,7 @@
                         </div>
                     </div>
                     <div class="w-full sm:w-1/4 text-right" style="text-align: right;">
+                        <a href="{{ route('admin.manager.copy', ['task_for_patient' => $taskForPatient]) }}" class="btn btn-success mr-2">{{ trans('global.copy') }}</a>
                         <button class="btn btn-indigo mr-2" type="submit">
                             {{ trans('global.save') }}
                         </button>
