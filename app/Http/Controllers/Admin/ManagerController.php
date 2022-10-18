@@ -43,4 +43,14 @@ class ManagerController extends Controller
 
         return view('admin.manager.show' );
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function copy(TaskForPatient $taskForPatient)
+    {
+//        abort_if(Gate::denies('copy'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.manager.copy', compact('taskForPatient'));
+    }
 }

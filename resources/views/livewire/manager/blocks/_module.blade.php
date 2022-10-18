@@ -61,7 +61,7 @@
             </div>
         </dd>
     </div>
-    @if($patient->tasks)
+    @if(isset($patient) && $patient->tasks)
         @include('livewire.manager.blocks._tasks-for-patient')
     @endif
 </div>

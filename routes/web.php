@@ -58,6 +58,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'h
     // File Fore Mod
     Route::resource('file-fore-mods', FileForeModController::class, ['except' => ['store', 'update', 'destroy']]);
 
+    Route::get('manager/{task_for_patient}/copy', [ManagerController::class, 'copy'])->name('manager.copy');
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
 });
 
