@@ -60,6 +60,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'h
 
     Route::get('manager/{task_for_patient}/copy', [ManagerController::class, 'copy'])->name('manager.copy');
     Route::resource('manager', ManagerController::class, ['except' => ['store', 'update', 'destroy']]);
+
+    // Reports
+    Route::get('reports/patients', [\App\Http\Controllers\Admin\Reports\PatientController::class, 'index'])
+        ->name('reports.patients');
 });
 
 Route::group(['middleware' => ['auth', 'has_role:Patient']], function () {
