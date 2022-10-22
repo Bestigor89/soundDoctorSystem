@@ -212,6 +212,9 @@ class PermissionsTableSeeder extends Seeder
             [
                 'title' => 'patient',
             ],
+            [
+                'title' => 'reports',
+            ],
         ];
     }
 }

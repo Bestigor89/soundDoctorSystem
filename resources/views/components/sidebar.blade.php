@@ -152,6 +152,15 @@
                     </li>
                 @endcan
 
+                @can('reports')
+                    <li class="items-center">
+                        <a class="{{ request()->is("admin/reports*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.reports.patients") }}">
+                            <i class="fas fa-list c-sidebar-nav-icon"></i>
+                            {{ trans('cruds.reports.title') }}
+                        </a>
+                    </li>
+                @endcan
+
                 @if(file_exists(app_path('Http/Controllers/Auth/UserProfileController.php')))
                     @can('auth_profile_edit')
                         <li class="items-center">

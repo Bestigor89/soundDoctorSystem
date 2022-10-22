@@ -235,4 +235,15 @@ return [
             'deleted_at_helper' => ' ',
         ],
     ],
+    'reports' => [
+        'title' => 'Отчёты',
+
+        'fields' => [
+            'month_year' => 'Месяц/Год',
+            'doctor' => 'Доктор',
+            'session_count' => 'Количество сеансов',
+            'money_count' => 'Сумма',
+            'patient' => 'Пациент',
+        ],
+    ],
 ];

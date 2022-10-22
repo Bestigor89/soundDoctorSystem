@@ -8,6 +8,9 @@ use Illuminate\Database\Seeder;
 
 class PermissionRoleTableSeeder extends Seeder
 {
+    /**
+     * @return void
+     */
     public function run()
     {
         foreach ($this->getItems() as $roleTitle => $permissions) {
@@ -110,6 +113,7 @@ class PermissionRoleTableSeeder extends Seeder
                 'file_fore_mod_show',
                 'file_fore_mod_delete',
                 'file_fore_mod_access',
+                'reports',
             ],
             Role::TITLE_DOCTOR => [
                 'mod_create',
@@ -127,6 +131,7 @@ class PermissionRoleTableSeeder extends Seeder
                 'task_for_patient_show',
                 'task_for_patient_delete',
                 'task_for_patient_access',
+                'reports',
             ],
             Role::TITLE_PATIENT => [
                 'patient',
