@@ -26,6 +26,8 @@ return [
     'task_for_patient' => [
         'labels' => [
             'list' => 'Предыдущие процедуры',
+            'action' => 'Действие',
+            'open' => 'Открыть',
         ],
     ],
 

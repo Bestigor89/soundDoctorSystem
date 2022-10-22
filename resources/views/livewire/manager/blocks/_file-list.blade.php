@@ -17,20 +17,23 @@
                     <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm sortable__item" data-order-attribute="{{ $loop->index }}" data-id="{{ $file->id }}">
                         <div class="flex w-0 flex-1 items-center">
                             <span class="ml-2 w-0 flex-1 truncate mt-1 mb-1">
-                                {{ $file->name }} -
-                                <input type="number"
-                                       value="{{ $file->pivot->durations ?? $file->durations }}"
-                                       id="fileDuration-{{ $file->pivot->id }}"
-                                       name="fileDuration-{{ $file->pivot->id }}"
-                                       class="inline-block w-20 form-control file__duration__input"
-                                       min="0"
-                                />
-                                <a class="btn btn-sm btn-info mr-2"
-                                    wire:click.prevent="$emit('fileDurationChanged', {{ $file->pivot->id }})"
-                                ><i class="fas fa-save"></i></a>
+                                {{ $file->name }}
+
+
                             </span>
                         </div>
                         <div class="ml-4 flex-shrink-0">
+                            -
+                            <input type="number"
+                                   value="{{ $file->pivot->durations ?? $file->durations }}"
+                                   id="fileDuration-{{ $file->pivot->id }}"
+                                   name="fileDuration-{{ $file->pivot->id }}"
+                                   class="inline-block w-20 form-control file__duration__input"
+                                   min="0"
+                            />
+                            <a class="btn btn-sm btn-info mr-2"
+                               wire:click.prevent="$emit('fileDurationChanged', {{ $file->pivot->id }})"
+                            ><i class="fas fa-save"></i></a>
                             <a
                                 class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
                                 wire:click.prevent="detachFileFromMod({{ $file->id }})"
