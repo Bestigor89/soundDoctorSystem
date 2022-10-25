@@ -1,4 +1,5 @@
 window._ = require('lodash');
+import Sortable from 'sortablejs';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -9,8 +10,8 @@ window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
     require('select2');
-    window.Dropzone = require('dropzone').default
-    window.Sortable = require('sortablejs/Sortable.min');
+    window.Dropzone = require('dropzone').default;
+    window.Sortable = Sortable;
     require('flatpickr');
 } catch (e) {}
 

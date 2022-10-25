@@ -12,6 +12,7 @@ use App\Models\Section;
 use App\Models\TaskForPatient;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -39,11 +40,6 @@ class Index extends Component
      * @var Patient|null
      */
     public $patient = null;
-
-    /**
-     * @var Mod|null
-     */
-    public $module = null;
 
     /**
      * @var string|null
@@ -96,6 +92,11 @@ class Index extends Component
     public $fileDurations = 0;
 
     /**
+     * @var Collection
+     */
+    public $files;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -134,6 +135,9 @@ class Index extends Component
         $this->mod = $mod;
         if (! $this->mod->exists) {
             $this->moduleList = Mod::query()->latest()->take(self::MODULE_COUNT)->get();
+            $this->files = $this->mod->files;
+        } else {
+            $this->files = collect();
         }
         $this->taskForPatient = $taskForPatient;
         $this->date_start = now_in_base_time_zone();
@@ -313,10 +317,15 @@ class Index extends Component
      */
     public function attachFileToMod(FileLibrary $fileLibrary)
     {
-        $this->mod->files()->attach($fileLibrary, [
-            'sort_order' => 0,
-        ]);
-        $this->mod->load('files');
+        if ($this->mod->exists) {
+            $this->mod->files()->attach($fileLibrary, [
+                'sort_order' => 0,
+            ]);
+            $this->mod->load('files');
+        } else {
+            $this->files->push($fileLibrary);
+        }
+
         $this->updateFileDurations();
     }
 
