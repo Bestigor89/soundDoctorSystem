@@ -324,4 +324,5 @@ return [
     'messenger'                      => 'Мессенджер',
     'loading'                        => 'Загрузка...',
     'copy' => 'Копировать',
+    'search_file_placeholder' => 'Поиск файлов по названию',
 ];

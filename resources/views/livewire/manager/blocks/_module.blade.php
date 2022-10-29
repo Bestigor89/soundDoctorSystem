@@ -15,7 +15,12 @@
             <button type="submit" id="save__module"></button>
         </form>
     @endpush
-    @if(!blank($moduleList))
+    @if(!blank($searchModule))
+        <button class="btn btn-indigo mt-2" type="button" wire:click.prevent="$emit('saveModule')">
+            {{ trans('models.mod.actions.create') }}
+        </button>
+    @endif
+    @if(isset($moduleList) && !blank($moduleList))
         <div class="bg-white py-5 sm:grid sm:grid-cols-3 sm:gap-4 mt-2 w-full">
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
                 <ul class="divide-y divide-gray-200 rounded-md border border-gray-200">
@@ -36,10 +41,6 @@
                 </ul>
             </dd>
         </div>
-    @elseif(blank($moduleList) && !blank($searchModule))
-        <button class="btn btn-indigo mt-2" type="button" wire:click.prevent="$emit('saveModule')">
-            {{ trans('models.mod.actions.create') }}
-        </button>
     @endif
 
 </div>

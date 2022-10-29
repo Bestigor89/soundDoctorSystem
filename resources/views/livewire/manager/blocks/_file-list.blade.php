@@ -14,29 +14,27 @@
             </div>
             <ul class="divide-y divide-gray-200 rounded-md border border-gray-200" id="sortable__items">
                 @forelse($files as $file)
-                    <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm sortable__item" data-order-attribute="{{ $loop->index }}" data-id="{{ $file->id }}">
+                    <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm sortable__item" data-order-attribute="{{ $loop->index }}" data-id="{{ data_get($file, 'id') }}">
                         <div class="flex w-0 flex-1 items-center">
                             <span class="ml-2 w-0 flex-1 truncate mt-1 mb-1">
-                                {{ $file->name }}
-
-
+                                {{ data_get($file, 'name') }}
                             </span>
                         </div>
                         <div class="ml-4 flex-shrink-0">
                             -
                             <input type="number"
-                                   value="{{ $file->durations }}"
-                                   id="fileDuration-{{ $file->id }}"
-                                   name="fileDuration-{{ $file->id }}"
+                                   value="{{ data_get($file, 'pivot.durations') ?? data_get($file, 'durations') }}"
+                                   id="fileDuration-{{ data_get($file, 'pivot.id') ?? data_get($file, 'id') }}"
+                                   name="fileDuration-{{ data_get($file, 'pivot.id') ?? data_get($file, 'id') }}"
                                    class="inline-block w-20 form-control file__duration__input"
                                    min="0"
                             />
                             <a class="btn btn-sm btn-info mr-2"
-                               wire:click.prevent="$emit('fileDurationChanged', {{ $file->id }})"
+                               wire:click.prevent="$emit('fileDurationChanged', {{ data_get($file, 'pivot.id') ?? data_get($file, 'id') }})"
                             ><i class="fas fa-save"></i></a>
                             <a
                                 class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
-                                wire:click.prevent="detachFileFromMod({{ $file->id }})"
+                                wire:click.prevent="detachFileFromMod({{ data_get($file, 'id') }})"
                             >
                                 <i class="fas fa-times"></i>
                             </a>
