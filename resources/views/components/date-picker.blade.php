@@ -27,7 +27,6 @@
         } else if (el !== null) {
             el.classList.remove('invisible')
         }
-
 @this.set('{{ $attributes['wire:model'] }}', value)
     }
 

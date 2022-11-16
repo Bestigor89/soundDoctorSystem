@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskForPatientStatusEnum;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,3 +18,13 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('fix:task-for-patients', function () {
+    Schema::table('task_for_patients', function (\Illuminate\Database\Schema\Blueprint $table) {
+        $table->dropColumn('status');
+    });
+
+    Schema::table('task_for_patients', function (\Illuminate\Database\Schema\Blueprint $table) {
+        $table->enum('status', TaskForPatientStatusEnum::list())->default(TaskForPatientStatusEnum::HIDDEN);
+    });
+});

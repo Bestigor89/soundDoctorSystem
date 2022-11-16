@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Manager;
 
+use App\Enums\TaskForPatientStatusEnum;
 use App\Http\Livewire\WithSorting;
 use App\Models\Cost;
 use App\Models\FileForeMod;
@@ -182,6 +183,7 @@ class Index extends Component
         $this->taskForPatient->cost_id = $cost->id;
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
+        $this->taskForPatient->status = TaskForPatientStatusEnum::IN_PROGRESS;
         $this->taskForPatient->date_start = display_date_to_system($this->date_start);
 
         $this->taskForPatient->save();
@@ -305,7 +307,7 @@ class Index extends Component
         if ($this->files->isNotEmpty()) {
             foreach ($this->files as $file) {
                 $this->mod->files()->attach(data_get($file, 'id'), [
-                    'sort_order' => data_get($file, 'sort_order'),
+                    'sort_order' => data_get($file, 'sort_order', 0),
                 ]);
             }
         }

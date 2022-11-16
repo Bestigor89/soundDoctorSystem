@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\TaskForPatient;
 
+use App\Enums\TaskForPatientStatusEnum;
 use App\Models\Cost;
 use App\Models\Mod;
 use App\Models\Patient;
@@ -17,7 +18,7 @@ class Create extends Component
     public function mount(TaskForPatient $taskForPatient)
     {
         $this->taskForPatient         = $taskForPatient;
-        $this->taskForPatient->status = false;
+        $this->taskForPatient->status = TaskForPatientStatusEnum::IN_PROGRESS;
         $this->initListsForFields();
     }
 
@@ -54,7 +55,7 @@ class Create extends Component
                 'required',
             ],
             'taskForPatient.status' => [
-                'boolean',
+                'string',
             ],
         ];
     }

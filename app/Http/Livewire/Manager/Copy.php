@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Manager;
 
+use App\Enums\TaskForPatientStatusEnum;
 use App\Http\Livewire\WithSorting;
 use App\Models\Cost;
+use App\Models\FileForeMod;
 use App\Models\FileLibrary;
 use App\Models\Mod;
 use App\Models\Patient;
@@ -21,15 +23,12 @@ class Copy extends Component
 
     public Mod $mod;
 
+    public TaskForPatient $taskForPatient;
+
     /**
      * @var array
      */
     public array $listsForFields = [];
-
-    /**
-     * @var TaskForPatient
-     */
-    public $taskForPatient;
 
     /**
      * @var string|null
@@ -89,6 +88,14 @@ class Copy extends Component
     /**
      * @var array
      */
+    protected $listeners = [
+        'orderChanged',
+        'updatedFileDuration',
+    ];
+
+    /**
+     * @var array
+     */
     protected $rules = [
         'mod.id' => ['required', 'exists:mods,id'],
         'patient.id' => ['required', 'exists:patients,id'],
@@ -101,12 +108,20 @@ class Copy extends Component
      */
     public function mount(TaskForPatient $taskForPatient)
     {
-        $this->initListsForFields();
-        $this->mod = new Mod;
-        $this->date_start = system_datetime_to_display($taskForPatient->date_start);
-        $this->files = $taskForPatient->mode->files;
+        [$taskForPatient, $mod] = $this->prepareModels($taskForPatient);
+
         $this->taskForPatient = $taskForPatient;
-        $this->searchModule = $this->prepareModName();
+        $this->mod = $mod;
+
+        $this->initListsForFields();
+
+        if ($this->mod->exists) {
+            $this->files = $this->mod->files;
+        }
+
+        $this->date_start = system_datetime_to_display($this->taskForPatient->date_start);
+        $this->patient = $this->taskForPatient->pacient;
+        $this->cost = Cost::getActive();
         $this->updateFileDurations();
     }
 
@@ -116,9 +131,10 @@ class Copy extends Component
     public function booted()
     {
         $this->initListsForFields();
-        $this->files = $this->taskForPatient->mode->files;
+        $this->mod->load('files');
+        $this->files = $this->mod->files;
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
-        $this->sectionFiles = $this->section->fileLibrary;
+        $this->sectionFiles = $this->section->exists ? $this->section->fileLibrary : $this->loadAllFiles();
         $this->updateFileDurations();
     }
 
@@ -135,10 +151,10 @@ class Copy extends Component
         $this->validate();
 
         $cost = Cost::getActive();
-        $this->taskForPatient = new TaskForPatient;
         $this->taskForPatient->cost_id = $cost->id;
+        $this->taskForPatient->status = TaskForPatientStatusEnum::IN_PROGRESS;
         $this->taskForPatient->pacient_id = $this->patient->id;
-        $this->taskForPatient->mode_id = $this->mod->id;
+        $this->taskForPatient->mode_id = $this->mode->id;
         $this->taskForPatient->date_start = display_date_to_system($this->date_start);
 
         $this->taskForPatient->save();
@@ -215,6 +231,112 @@ class Copy extends Component
     }
 
     /**
+     * @param Section|null $section
+     * @return void
+     */
+    public function setSection(Section $section = null)
+    {
+        $section->load('fileLibrary');
+
+        $this->section = $section;
+        $this->sectionFiles = $section->exists ? $section->fileLibrary : $this->loadAllFiles();
+        $this->searchFile = null;
+    }
+
+    /**
+     * @param FileLibrary $fileLibrary
+     * @return void
+     */
+    public function attachFileToMod(FileLibrary $fileLibrary)
+    {
+        $this->mod->files()->attach($fileLibrary, [
+            'sort_order' => 0,
+        ]);
+        $this->mod->load('files');
+
+        $this->files = $this->mod->files;
+
+        $this->updateFileDurations();
+    }
+
+    /**
+     * @param FileLibrary $fileLibrary
+     * @return void
+     */
+    public function detachFileFromMod($fileLibrary)
+    {
+        $this->mod->files()->detach($fileLibrary);
+
+        $this->mod->load('files');
+
+        $this->files = $this->mod->files;
+
+        $this->updateFileDurations();
+    }
+
+    /**
+     * @param array $items
+     * @return void
+     */
+    public function orderChanged(array $items = [])
+    {
+        foreach ($items as $item) {
+            $file = $this->mod->files->find(data_get($item, 'id'));
+            $this->mod->files()->updateExistingPivot($file->id, [
+                'sort_order' => data_get($item, 'order'),
+            ]);
+        }
+
+        $this->mod->load('files');
+        $this->files = $this->mod->files;
+    }
+
+    /**
+     * @param FileForeMod $fileForeMod
+     * @param $duration
+     */
+    public function updatedFileDuration($fileForeMod, $duration)
+    {
+        $fileForeMod = FileForeMod::find($fileForeMod);
+
+        $fileForeMod->fill([
+            'durations' => $duration,
+        ])->save();
+
+        $this->mod->load('files');
+
+        $this->files = $this->mod->files;
+
+        $this->updateFileDurations();
+    }
+
+    /**
+     * @param string|null $value
+     * @return void
+     */
+    public function updatingSearchFile(string $value = null)
+    {
+        if (blank($value)) {
+            $this->sectionFiles = $this->section->fileLibrary;
+
+            return;
+        }
+
+        $this->sectionFiles = FileLibrary::query()
+            ->advancedFilter([
+                's' => $value,
+                'order_column' => $this->sortBy,
+                'order_direction' => $this->sortDirection,
+            ])
+            ->when($this->section->exists, function (Builder $builder) {
+                $builder->whereHas('section', function (Builder $builder) {
+                    return $builder->where('id', $this->section->id);
+                });
+            })
+            ->get();
+    }
+
+    /**
      * @return void
      */
     protected function prepareModName()
@@ -229,8 +351,10 @@ class Copy extends Component
      */
     protected function updateFileDurations()
     {
-        $this->fileDurations = $this->files->sum(function (FileLibrary $fileLibrary) {
-            return $fileLibrary->pivot->durations ?? $fileLibrary->durations;
+        $this->fileDurations = $this->files->sum(function ($fileLibrary) {
+            return !blank(data_get($fileLibrary, 'pivot.durations')) ?
+                $fileLibrary->pivot->durations :
+                data_get($fileLibrary, 'durations');
         });
     }
 
@@ -247,5 +371,41 @@ class Copy extends Component
                 $builder->where('owner_id', $user->id);
             })
             ->get();
+    }
+
+    /**
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function loadAllFiles()
+    {
+        return FileLibrary::query()->get();
+    }
+
+    /**
+     * @param TaskForPatient $taskForPatient
+     * @return array
+     */
+    protected function prepareModels(TaskForPatient $taskForPatient)
+    {
+        $task = $taskForPatient->replicate(['cost_id', 'mode_id', 'pacient_id']);
+
+        $taskForPatient->load('mode', 'mode.files');
+        $task->status = TaskForPatientStatusEnum::HIDDEN;
+
+        $mod = new Mod;
+        $mod->fill([
+            'name' => $this->prepareModName(),
+        ])->save();
+
+        $task->mode_id = $mod->id;
+
+        foreach ($taskForPatient->mode->files as $file) {
+            $mod->files()->attach($file, [
+                'sort_order' => $file->pivot->sort_order,
+                'durations' => $file->pivot->durations,
+            ]);
+        }
+
+        return [$task, $mod];
     }
 }

@@ -21,7 +21,7 @@
                             </span>
                         </div>
                         <div class="ml-4 flex-shrink-0">
-                            -
+                            - {{ data_get($file, 'pivot.durations') ?? data_get($file, 'durations') }}
                             <input type="number"
                                    value="{{ data_get($file, 'pivot.durations') ?? data_get($file, 'durations') }}"
                                    id="fileDuration-{{ data_get($file, 'pivot.id') ?? data_get($file, 'id') }}"

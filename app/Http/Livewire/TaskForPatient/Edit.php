@@ -53,7 +53,7 @@ class Edit extends Component
                 'required',
             ],
             'taskForPatient.status' => [
-                'boolean',
+                'string',
             ],
         ];
     }
