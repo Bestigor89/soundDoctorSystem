@@ -12,6 +12,22 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .extract([
+        'axios',
+        'flatpickr',
+        'jquery',
+        'lodash',
+        'select2',
+        'sortablejs',
+        'tailwindcss',
+        'dropzone',
+        '@tailwindcss/jit',
+        '@tailwindcss/forms',
+    ])
+    .autoload({
+        jquery: ['$', 'jQuery', 'jquery'],
+        sortablejs: ['Sortable'],
+    })
     .postCss('resources/css/app.css', 'public/css', [
-        require("tailwindcss")
+        require("tailwindcss"),
     ]);

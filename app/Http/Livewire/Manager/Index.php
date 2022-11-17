@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Manager;
 
+use App\Enums\TaskForPatientStatusEnum;
 use App\Http\Livewire\WithSorting;
 use App\Models\Cost;
 use App\Models\FileForeMod;
@@ -12,6 +13,7 @@ use App\Models\Section;
 use App\Models\TaskForPatient;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -39,11 +41,6 @@ class Index extends Component
      * @var Patient|null
      */
     public $patient = null;
-
-    /**
-     * @var Mod|null
-     */
-    public $module = null;
 
     /**
      * @var string|null
@@ -96,6 +93,11 @@ class Index extends Component
     public $fileDurations = 0;
 
     /**
+     * @var Collection
+     */
+    public $files;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -132,9 +134,13 @@ class Index extends Component
         }
 
         $this->mod = $mod;
-        if (! $this->mod->exists) {
+        if ($this->mod->exists) {
             $this->moduleList = Mod::query()->latest()->take(self::MODULE_COUNT)->get();
+            $this->files = $this->mod->files;
+        } else {
+            $this->files = collect();
         }
+        $this->searchModule = $this->prepareModName();
         $this->taskForPatient = $taskForPatient;
         $this->date_start = now_in_base_time_zone();
         $this->cost = Cost::getActive();
@@ -149,9 +155,12 @@ class Index extends Component
         $this->initListsForFields();
         if (! $this->mod->exists) {
             $this->moduleList = Mod::query()->latest()->take(self::MODULE_COUNT)->get();
+        } else {
+            $this->mod->load('files');
+            $this->files = $this->mod->files;
         }
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
-        $this->sectionFiles = $this->section ? $this->section->fileLibrary : null;
+        $this->sectionFiles = $this->section->exists ? $this->section->fileLibrary : $this->loadAllFiles();
         $this->updateFileDurations();
     }
 
@@ -174,6 +183,7 @@ class Index extends Component
         $this->taskForPatient->cost_id = $cost->id;
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
+        $this->taskForPatient->status = TaskForPatientStatusEnum::IN_PROGRESS;
         $this->taskForPatient->date_start = display_date_to_system($this->date_start);
 
         $this->taskForPatient->save();
@@ -274,6 +284,8 @@ class Index extends Component
     public function setModule(Mod $mod)
     {
         $this->mod = $mod;
+        $this->mod->load('files');
+        $this->files = $this->mod->files;
         $this->moduleList = [];
         $this->searchModule = null;
         $this->updateFileDurations();
@@ -288,10 +300,19 @@ class Index extends Component
         $this->validateOnly('mod.name');
 
         $this->mod->save();
-        $this->mod->load('files');
 
         $this->moduleList = [];
         $this->searchModule = null;
+
+        if ($this->files->isNotEmpty()) {
+            foreach ($this->files as $file) {
+                $this->mod->files()->attach(data_get($file, 'id'), [
+                    'sort_order' => data_get($file, 'sort_order', 0),
+                ]);
+            }
+        }
+
+        $this->files = $this->mod->load('files');
     }
 
     /**
@@ -303,7 +324,7 @@ class Index extends Component
         $section->load('fileLibrary');
 
         $this->section = $section;
-        $this->sectionFiles = $section->exists ? $section->fileLibrary : FileLibrary::query()->get();
+        $this->sectionFiles = $section->exists ? $section->fileLibrary : $this->loadAllFiles();
         $this->searchFile = null;
     }
 
@@ -313,10 +334,18 @@ class Index extends Component
      */
     public function attachFileToMod(FileLibrary $fileLibrary)
     {
-        $this->mod->files()->attach($fileLibrary, [
-            'sort_order' => 0,
-        ]);
-        $this->mod->load('files');
+        if ($this->mod->exists) {
+            $this->mod->files()->attach($fileLibrary, [
+                'sort_order' => 0,
+            ]);
+            $this->mod->load('files');
+
+            $this->files = $this->mod->files;
+        } else {
+            $fileLibrary->sort_order = $this->files->count() + 1;
+            $this->files = $this->files->push($fileLibrary);
+        }
+
         $this->updateFileDurations();
     }
 
@@ -324,11 +353,20 @@ class Index extends Component
      * @param FileLibrary $fileLibrary
      * @return void
      */
-    public function detachFileFromMod(FileLibrary $fileLibrary)
+    public function detachFileFromMod($fileLibrary)
     {
-        $this->mod->files()->detach($fileLibrary);
+        if ($this->mod->exists) {
+            $this->mod->files()->detach($fileLibrary);
 
-        $this->mod->load('files');
+            $this->mod->load('files');
+
+            $this->files = $this->mod->files;
+        } else {
+            $this->files = $this->files->reject(function ($item) use ($fileLibrary) {
+                return data_get($item, 'id') === data_get($fileLibrary, 'id');
+            });
+        }
+
         $this->updateFileDurations();
     }
 
@@ -336,29 +374,58 @@ class Index extends Component
      * @param array $items
      * @return void
      */
-    public function orderChanged(array $items= [])
+    public function orderChanged(array $items = [])
     {
         foreach ($items as $item) {
-            $file = $this->mod->files->find(data_get($item, 'id'));
-            $this->mod->files()->updateExistingPivot($file->id, [
-                'sort_order' => data_get($item, 'order'),
-            ]);
+            if ($this->mod->exists) {
+                $file = $this->mod->files->find(data_get($item, 'id'));
+                $this->mod->files()->updateExistingPivot($file->id, [
+                    'sort_order' => data_get($item, 'order'),
+                ]);
+            } else {
+                $this->files = $this->files->transform(function ($file) use ($item) {
+                    if (data_get($file, 'id') === data_get($item, 'id')) {
+                        $file['sort_order'] = data_get($item, 'order');
+                    }
+
+                    return $file;
+                });
+            }
         }
 
-        $this->mod->load('files');
+        if ($this->mod->exists) {
+            $this->mod->load('files');
+            $this->files = $this->mod->files;
+        } else {
+            $this->files = $this->files->sortBy('sort_order')->values();
+        }
     }
 
     /**
      * @param FileForeMod $fileForeMod
      * @param $duration
      */
-    public function updatedFileDuration(FileForeMod $fileForeMod, $duration)
+    public function updatedFileDuration($fileForeMod, $duration)
     {
-        $fileForeMod->fill([
-            'durations' => $duration,
-        ])->save();
+        if ($this->mod->exists) {
+            $fileForeMod = FileForeMod::find($fileForeMod);
 
-        $this->mod->load('files');
+            $fileForeMod->fill([
+                'durations' => $duration,
+            ])->save();
+            $this->mod->load('files');
+
+            $this->files = $this->mod->files;
+        } else {
+            $this->files = $this->files->transform(function ($file) use ($fileForeMod, $duration) {
+                if ($fileForeMod === data_get($file, 'id')) {
+                    $file = data_set($file, 'durations', $duration);
+                }
+
+                return $file;
+            });
+        }
+
         $this->updateFileDurations();
     }
 
@@ -382,8 +449,28 @@ class Index extends Component
      */
     protected function updateFileDurations()
     {
-        $this->fileDurations = $this->mod->files->sum(function (FileLibrary $fileLibrary) {
-            return $fileLibrary->pivot->durations ?? $fileLibrary->durations;
+        $this->fileDurations = $this->files->sum(function ($fileLibrary) {
+            return !blank(data_get($fileLibrary, 'pivot.durations')) ?
+                $fileLibrary->pivot->durations :
+                data_get($fileLibrary, 'durations');
         });
+    }
+
+    /**
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function loadAllFiles()
+    {
+        return FileLibrary::query()->get();
+    }
+
+    /**
+     * @return void
+     */
+    protected function prepareModName()
+    {
+        $lastId = Mod::query()->latest()->first();
+
+        return $lastId->id + 1;
     }
 }

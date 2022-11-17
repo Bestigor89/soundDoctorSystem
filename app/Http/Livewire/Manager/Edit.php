@@ -11,12 +11,15 @@ use App\Models\Section;
 use App\Models\TaskForPatient;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Edit extends Component
 {
     use WithSorting;
+
+    const MODULE_COUNT = 10;
 
     public Mod $mod;
 
@@ -88,6 +91,11 @@ class Edit extends Component
     public $fileDurations = 0;
 
     /**
+     * @var Collection
+     */
+    public $files;
+
+    /**
      * @var array
      */
     protected $queryString = [
@@ -121,6 +129,9 @@ class Edit extends Component
         $taskForPatient->load(['mode', 'mode.files', 'pacient']);
         $this->taskForPatient = $taskForPatient;
         $this->mod = $taskForPatient->mode;
+        if ($this->mod->exists) {
+            $this->files = $this->mod->files;
+        }
         $this->patient = $taskForPatient->pacient;
         $this->date_start = system_datetime_to_display($taskForPatient->date_start);
         $this->updateFileDurations();
@@ -132,8 +143,12 @@ class Edit extends Component
     public function booted()
     {
         $this->initListsForFields();
+        if ($this->mod->exists) {
+            $this->mod->load('files');
+            $this->files = $this->mod->files;
+        }
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
-        $this->sectionFiles = $this->section->fileLibrary;
+        $this->sectionFiles = $this->section->exists ? $this->section->fileLibrary : $this->loadAllFiles();
         $this->updateFileDurations();
     }
 
@@ -283,6 +298,7 @@ class Edit extends Component
         ])->save();
 
         $this->mod->load('files');
+        $this->files = $this->mod->files;
         $this->updateFileDurations();
     }
 
@@ -309,6 +325,7 @@ class Edit extends Component
             'sort_order' => 0,
         ]);
         $this->mod->load('files');
+        $this->files = $this->mod->files;
         $this->updateFileDurations();
     }
 
@@ -321,6 +338,7 @@ class Edit extends Component
         $this->mod->files()->detach($fileLibrary);
 
         $this->mod->load('files');
+        $this->files = $this->mod->files;
         $this->updateFileDurations();
     }
 
@@ -338,6 +356,7 @@ class Edit extends Component
         }
 
         $this->mod->load('files');
+        $this->files = $this->mod->files;
     }
 
     /**
@@ -360,8 +379,18 @@ class Edit extends Component
      */
     protected function updateFileDurations()
     {
-        $this->fileDurations = $this->mod->files->sum(function (FileLibrary $fileLibrary) {
-            return $fileLibrary->pivot->durations ?? $fileLibrary->durations;
+        $this->fileDurations = $this->files->sum(function ($fileLibrary) {
+            return !blank(data_get($fileLibrary, 'pivot.durations')) ?
+                $fileLibrary->pivot->durations :
+                data_get($fileLibrary, 'durations');
         });
+    }
+
+    /**
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function loadAllFiles()
+    {
+        return FileLibrary::query()->get();
     }
 }

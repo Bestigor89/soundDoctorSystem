@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\TaskForPatient\WithoutHidden;
 use \DateTimeInterface;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +51,16 @@ class TaskForPatient extends Model
         'status',
         'date_start',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new WithoutHidden);
+    }
 
     public function pacient()
     {

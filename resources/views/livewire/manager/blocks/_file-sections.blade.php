@@ -22,7 +22,7 @@
                                 <span class="ml-2 w-0 flex-1 truncate">{{ $fileItem->name }} ({{ $fileItem->durations }})</span>
                             </div>
                             <div class="ml-4 flex-shrink-0">
-                                @if(! $mod->files->firstWhere('id', $fileItem->id))
+                                @if($files->where('id', $fileItem->id)->isEmpty())
                                 <a
                                     class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
                                     wire:click.prevent="attachFileToMod({{ $fileItem->id }})"
@@ -39,7 +39,7 @@
     @endif
 </div>
 <div class="w-full sm:w-1/2">
-    <input type="text" wire:model.debounce.300ms="searchFile" name="searchFile" id="searchFile" class="block w-full form-control">
+    <input type="text" wire:model.debounce.300ms="searchFile" name="searchFile" id="searchFile" class="block w-full form-control" placeholder="{{ __('global.search_file_placeholder') }}">
     <div class="flex justify-center items-center" wire:loading.grid wire:target="searchFile">
         @lang('global.loading')
     </div>

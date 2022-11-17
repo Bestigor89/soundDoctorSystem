@@ -30,14 +30,8 @@
             <div class="w-full">
                 @include('livewire.manager.blocks._patient')
             </div>
-            <div class="sm:flex @if(blank($patient)) disabled__block @endif">
+            <div class="sm:flex">
                 @include('livewire.manager.blocks._module')
-            </div>
-            <div class="sm:flex @if(!$mod->exists) disabled__block @endif">
-                @include('livewire.manager.blocks._file-list')
-            </div>
-            <div class="sm:flex mt-8 @if(!$mod->exists) disabled__block @endif">
-                @include('livewire.manager.blocks._file-sections')
             </div>
         </form>
 
