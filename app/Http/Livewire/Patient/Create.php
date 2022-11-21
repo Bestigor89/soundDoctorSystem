@@ -26,6 +26,9 @@ class Create extends Component
      */
     public $phone = null;
 
+    /**
+     * @var null
+     */
     public $password = null;
 
     /**

@@ -4,17 +4,21 @@ namespace App\Http\Livewire\Doctor;
 
 use App\Models\Doctor;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class Edit extends Component
 {
     public Doctor $doctor;
 
+    public User $user;
+
     public array $listsForFields = [];
 
     public function mount(Doctor $doctor)
     {
         $this->doctor = $doctor;
+        $this->user = $doctor->user;
         $this->initListsForFields();
     }
 
@@ -27,6 +31,10 @@ class Edit extends Component
     {
         $this->validate();
 
+        $this->user->save();
+
+        $this->doctor->name = $this->user->name;
+        $this->doctor->status = $this->user->status;
         $this->doctor->save();
 
         return redirect()->route('admin.doctors.index');
@@ -35,17 +43,16 @@ class Edit extends Component
     protected function rules(): array
     {
         return [
-            'doctor.name' => [
-                'string',
+            'user.name' => [
                 'required',
             ],
-            'doctor.status' => [
+            'user.email' => [
+                'email:rfc',
+                'required',
+                Rule::unique('users', 'email')->ignore($this->user->id),
+            ],
+            'user.status' => [
                 'boolean',
-            ],
-            'doctor.user_id' => [
-                'integer',
-                'exists:users,id',
-                'required',
             ],
         ];
     }
