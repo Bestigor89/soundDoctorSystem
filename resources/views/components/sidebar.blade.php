@@ -161,6 +161,15 @@
                     </li>
                 @endcan
 
+                @can('patient')
+                    <li class="items-center">
+                        <a class="{{ request()->is("patient/tasks*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("patient.tasks") }}">
+                            <i class="fas fa-list c-sidebar-nav-icon"></i>
+                            {{ trans('global.tasks') }}
+                        </a>
+                    </li>
+                @endcan
+
                 @if(file_exists(app_path('Http/Controllers/Auth/UserProfileController.php')))
                     @can('auth_profile_edit')
                         <li class="items-center">

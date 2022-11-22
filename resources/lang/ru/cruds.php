@@ -207,9 +207,13 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
-            'status'            => 'Status',
+            'status'            => 'Статус',
             'status_helper'     => ' ',
             'date_start' => 'Дата начала',
+        ],
+        'status' => [
+            \App\Enums\TaskForPatientStatusEnum::IN_PROGRESS => 'Не выполнен',
+            \App\Enums\TaskForPatientStatusEnum::FINISHED => 'Выполнен',
         ],
         'actions' => [
             'medical_procedure' => 'Задание',

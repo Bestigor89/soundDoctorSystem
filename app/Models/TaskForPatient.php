@@ -33,7 +33,6 @@ class TaskForPatient extends Model
     ];
 
     protected $casts = [
-        'status' => 'boolean',
         'date_start' => 'datetime',
     ];
 
@@ -75,6 +74,11 @@ class TaskForPatient extends Model
     public function mode()
     {
         return $this->belongsTo(Mod::class);
+    }
+
+    public function getStatusTextAttribute()
+    {
+        return data_get(trans('cruds.taskForPatient.status'), $this->status);
     }
 
     protected function serializeDate(DateTimeInterface $date)

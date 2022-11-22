@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\TaskForPatientController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\UserProfileController;
+use App\Http\Controllers\PatientProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -67,7 +68,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'h
 });
 
 Route::group(['middleware' => ['auth', 'has_role:Patient']], function () {
-    Route::get('patient', [PatientController::class, 'index']);
+    Route::get('patient', [PatientProfileController::class, 'index'])
+        ->name('patient.profile');
+
+    Route::get('patient/tasks', [PatientProfileController::class, 'tasks'])
+        ->name('patient.tasks');
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

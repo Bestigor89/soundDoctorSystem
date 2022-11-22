@@ -13,10 +13,8 @@
         <div class="card-body">
             <div class="pt-3">
                 @livewire('update-profile-information-form')
-
-                    <hr class="mt-6 border-b-1 border-blueGray-300">
-
-                    @livewire('update-password-form')
+                <hr class="mt-6 border-b-1 border-blueGray-300">
+                @livewire('update-password-form')
             </div>
         </div>
     </div>
