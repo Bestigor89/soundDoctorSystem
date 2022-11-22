@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Patient;
 
 use App\Models\Doctor;
 use App\Models\Patient;
+use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
 
@@ -11,11 +12,33 @@ class Create extends Component
 {
     public Patient $patient;
 
+    public User $user;
+
     public array $listsForFields = [];
 
-    public function mount(Patient $patient)
+    /**
+     * @var null
+     */
+    public $doctor_id = null;
+
+    /**
+     * @var null
+     */
+    public $phone = null;
+
+    /**
+     * @var null
+     */
+    public $password = null;
+
+    /**
+     * @param Patient $patient
+     * @param User $user
+     */
+    public function mount(Patient $patient, User $user)
     {
         $this->patient         = $patient;
+        $this->user = $user;
         $this->patient->status = true;
         $this->initListsForFields();
     }
@@ -29,6 +52,18 @@ class Create extends Component
     {
         $this->validate();
 
+        $role = Role::byTitle(Role::TITLE_PATIENT);
+
+        $this->user->password = bcrypt($this->password);
+        $this->user->save();
+
+        $this->user->roles()->attach($role);
+
+        $this->patient->user_id = $this->user->id;
+        $this->patient->name = $this->user->name;
+        $this->patient->phone = $this->phone;
+        $this->patient->doctor_id = $this->doctor_id;
+        $this->patient->status = $this->user->status;
         $this->patient->save();
 
         return redirect()->route('admin.patients.index');
@@ -37,26 +72,28 @@ class Create extends Component
     protected function rules(): array
     {
         return [
-            'patient.name' => [
+            'user.name' => [
+                'required',
+            ],
+            'user.email' => [
+                'email:rfc',
+                'required',
+                'unique:users,email',
+            ],
+            'password' => [
                 'string',
                 'required',
             ],
-            'patient.doctor_id' => [
+            'user.status' => [
+                'boolean',
+            ],
+            'doctor_id' => [
                 'integer',
                 'exists:doctors,id',
                 'required',
             ],
-            'patient.phone' => [
-                'string',
+            'phone' => [
                 'nullable',
-            ],
-            'patient.status' => [
-                'boolean',
-            ],
-            'patient.user_id' => [
-                'integer',
-                'exists:users,id',
-                'required',
             ],
         ];
     }
