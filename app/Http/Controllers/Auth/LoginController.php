@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
@@ -54,13 +56,14 @@ class LoginController extends Controller
             return $response;
         }
 
+        /** @var User $user */
         $user = \Auth::user();
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)
             : redirect()->intended(
-                $user->patient ?
-                    RouteServiceProvider::PATIENT_HOME :
+                $user->hasRole(Role::TITLE_PATIENT) ?
+                    route('patient.profile') :
                     $this->redirectPath()
             );
     }
