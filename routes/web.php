@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth', 'has_role:Patient']], function () {
 
     Route::get('patient/tasks', [PatientProfileController::class, 'tasks'])
         ->name('patient.tasks');
+    Route::get('patient/tasks/{taskForPatient}', [PatientProfileController::class, 'show'])
+        ->name('patient.tasks.show');
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

@@ -325,4 +325,6 @@ return [
     'loading'                        => 'Загрузка...',
     'copy' => 'Копировать',
     'search_file_placeholder' => 'Поиск файлов по названию',
+    'task_show' => 'Здача - :task',
+    'task_finished' => 'Задание выполнено',
 ];
