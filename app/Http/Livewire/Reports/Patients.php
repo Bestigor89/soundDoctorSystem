@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Reports;
 
+use App\Enums\TaskForPatientStatusEnum;
 use App\Models\TaskForPatient;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class Patients extends Component
             ->when(! $user->is_admin, function (Builder $builder) use ($user) {
                 return $builder->where('doctors.user_id', $user->id);
             })
-            ->where('task_for_patients.status', true)
+            ->where('task_for_patients.status', '=', TaskForPatientStatusEnum::FINISHED)
             ->groupby('year','month', 'patients.id', 'doctors.id');
 
         $items = $query->get();
