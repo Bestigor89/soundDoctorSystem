@@ -2091,14 +2091,14 @@ select {
 .ml-3 {
 	margin-left: 0.75rem;
 }
+.-ml-px {
+	margin-left: -1px;
+}
 .mt-1 {
 	margin-top: 0.25rem;
 }
 .mb-1 {
 	margin-bottom: 0.25rem;
-}
-.-ml-px {
-	margin-left: -1px;
 }
 .block {
 	display: block;
@@ -2484,6 +2484,10 @@ select {
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 }
+.px-2 {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
 .py-5 {
 	padding-top: 1.25rem;
 	padding-bottom: 1.25rem;
@@ -2491,10 +2495,6 @@ select {
 .px-2\.5 {
 	padding-left: 0.625rem;
 	padding-right: 0.625rem;
-}
-.px-2 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
 }
 .pb-4 {
 	padding-bottom: 1rem;
@@ -2781,11 +2781,6 @@ select {
 	color: rgba(79, 70, 229, var(--tw-text-opacity));
 }
 
-.hover\:text-indigo-500:hover {
-	--tw-text-opacity: 1;
-	color: rgba(99, 102, 241, var(--tw-text-opacity));
-}
-
 .hover\:text-gray-500:hover {
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));
@@ -2794,6 +2789,11 @@ select {
 .hover\:text-gray-400:hover {
 	--tw-text-opacity: 1;
 	color: rgba(156, 163, 175, var(--tw-text-opacity));
+}
+
+.hover\:text-indigo-500:hover {
+	--tw-text-opacity: 1;
+	color: rgba(99, 102, 241, var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

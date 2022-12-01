@@ -5,11 +5,11 @@
             <div class="card-header border-b border-blueGray-200">
                 <div class="card-header-container">
                     <h6 class="card-title">
-                        {{ trans('global.tasks') }}
+                        {{ trans('global.task_show', ['task' => $taskForPatient->mode->name]) }}
                     </h6>
                 </div>
             </div>
-            @livewire('profile.task')
+            @livewire('profile.show-task', [$taskForPatient])
         </div>
     </div>
 @endsection

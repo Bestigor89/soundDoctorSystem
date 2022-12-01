@@ -12,6 +12,7 @@ try {
     require('select2');
     window.Dropzone = require('dropzone').default;
     window.Sortable = Sortable;
+    require('howler');
     require('flatpickr');
 } catch (e) {}
 

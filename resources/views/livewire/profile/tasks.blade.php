@@ -25,7 +25,7 @@
                 @forelse($items as $item)
                     <tr>
                         <td>
-                            {{ $item->mode->name }}
+                            <a href="{{ route('patient.tasks.show', $item) }}">{{ $item->mode->name }}</a>
                         </td>
                         <td>
                             {{ $item->pacient->doctor->name }}
