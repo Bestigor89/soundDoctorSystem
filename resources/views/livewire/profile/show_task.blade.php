@@ -2,7 +2,7 @@
     <div class="w-full sm:w-1/2 text-center p-4">
         <a class="btn btn-sm btn-info mr-2 player__play"><i class="fa fa-play"></i></a>
         <a class="btn btn-sm btn-info mr-2 player__pause"><i class="fa fa-pause"></i></a>
-        <a class="btn btn-sm btn-info mr-2 player__stop"><i class="fa fa-stop"></i></a>
+{{--        <a class="btn btn-sm btn-info mr-2 player__stop"><i class="fa fa-stop"></i></a>--}}
     </div>
     <div class="w-full sm:w-1/2 pb-32">
         <ul class="divide-y divide-gray-200 rounded-md border border-gray-200">
