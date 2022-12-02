@@ -11,13 +11,10 @@
                         {{ trans('cruds.reports.fields.doctor') }}
                     </th>
                     <th>
-                        {{ trans('cruds.taskForPatient.fields.date_start') }}
+                        {{ trans('cruds.taskForPatient.fields.date_end') }}
                     </th>
                     <th>
                         {{ trans('cruds.taskForPatient.fields.status') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.cost.fields.price') }}
                     </th>
                 </tr>
                 </thead>
@@ -31,13 +28,10 @@
                             {{ $item->pacient->doctor->name }}
                         </td>
                         <td>
-                            {{ system_datetime_to_display($item->date_start) }}
+                            {{ system_datetime_to_display($item->date_start)->addDay() }}
                         </td>
                         <td>
                             {{ $item->status_text }}
-                        </td>
-                        <td>
-                            {{ $item->cost->price }}
                         </td>
                     </tr>
                 @empty
