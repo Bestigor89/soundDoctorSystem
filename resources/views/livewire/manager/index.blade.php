@@ -33,7 +33,7 @@
                 @include('livewire.manager.blocks._module')
             </div>
             <div class="sm:flex">
-                @include('livewire.manager.blocks._file-list')
+{{--                @include('livewire.manager.blocks._file-list')--}}
             </div>
             <div class="sm:flex mt-8">
                 @include('livewire.manager.blocks._file-sections')

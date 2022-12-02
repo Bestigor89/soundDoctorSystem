@@ -5,7 +5,7 @@
 {{--        <a class="btn btn-sm btn-info mr-2 player__stop"><i class="fa fa-stop"></i></a>--}}
     </div>
     <div class="w-full sm:w-1/2 pb-32">
-        <ul class="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul class="divide-y divide-gray-200 rounded-md border border-gray-200 hidden">
             @forelse($taskForPatient->mode->files as $item)
                 <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm play__item" data-url="{{ data_get($item->sound_file->first(), 'url') }}" data-duration="{{ data_get($item, 'pivot.durations') ?? data_get($item, 'durations') }}">
                     <div class="flex w-0 flex-1 items-center">

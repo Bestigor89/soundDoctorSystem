@@ -21,6 +21,7 @@ services:
 
         volumes:
             - './mysql:/var/lib/mysql'
+            - ./dump:/tmp/dump
         environment:
             - MYSQL_ROOT_USER=root
             - MYSQL_ROOT_PASSWORD=root
