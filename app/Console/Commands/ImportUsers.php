@@ -10,14 +10,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class createOldUsers extends Command
+class ImportUsers extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'move:oldUser';
+    protected $signature = 'import:users';
 
     /**
      * The console command description.
