@@ -160,7 +160,7 @@ class Index extends Component
             $this->files = $this->mod->files;
         }
         $this->section = $this->section ?? $this->listsForFields['sections']->first();
-        $this->sectionFiles = $this->section->exists ? $this->section->fileLibrary : $this->loadAllFiles();
+        $this->sectionFiles = ! blank($this->section) && $this->section->exists ? $this->section->fileLibrary : $this->loadAllFiles();
         $this->updateFileDurations();
     }
 
@@ -465,12 +465,14 @@ class Index extends Component
     }
 
     /**
-     * @return void
+     * @return int
      */
     protected function prepareModName()
     {
         $lastId = Mod::query()->latest()->first();
 
-        return $lastId->id + 1;
+        return $lastId
+            ? $lastId->id + 1
+            : 1;
     }
 }

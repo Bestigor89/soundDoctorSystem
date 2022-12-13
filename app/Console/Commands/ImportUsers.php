@@ -41,11 +41,6 @@ class ImportUsers extends Command
     ];
 
     /**
-     * @var int
-     */
-    protected $chunkCount = 100;
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -63,13 +58,53 @@ class ImportUsers extends Command
      */
     public function handle()
     {
-        $users = $this->dataBase->table('doc_users')->get();
+        $doctors = $this->dataBase->table('doc_users')
+            ->where('user_type', 2)
+            ->get();
+
+        $this->handleDoctors($doctors);
+
+        $patients = $this->dataBase->table('doc_users')
+            ->where('user_type', 0)
+            ->get();
+
+        $this->handlePatients($patients);
+
+        $users = $this->dataBase->table('doc_users')
+            ->whereNotIn('user_type', [
+                0, 2,
+            ])
+            ->get();
 
         foreach ($users as $user) {
-            $this->handleItem($user);
+            $this->createUser($user);
         }
 
         return self::SUCCESS;
+    }
+
+    /**
+     * @param $items
+     * @return void
+     */
+    protected function handleDoctors($items)
+    {
+        foreach ($items as $item) {
+            $user = $this->createUser($item);
+            $this->createDoctor($item, $user);
+        }
+    }
+
+    /**
+     * @param $items
+     * @return void
+     */
+    protected function handlePatients($items)
+    {
+        foreach ($items as $item) {
+            $user = $this->createUser($item);
+            $this->createPatient($item, $user);
+        }
     }
 
     /**
@@ -164,6 +199,7 @@ class ImportUsers extends Command
             'user_id' => $user->id,
             'status' => trim(data_get($item, 'active')),
             'phone' => trim(data_get($item, 'tel')),
+            'doctor_id' => $this->getDoctorEmail(data_get($item, 'owner')),
         ];
     }
 
@@ -199,5 +235,28 @@ class ImportUsers extends Command
         $role = Arr::get($this->roleMap, data_get($item, 'user_type'));
 
         return Role::byTitle($role);
+    }
+
+    /**
+     * @param $owner
+     * @return int|null
+     */
+    protected function getDoctorEmail($owner)
+    {
+        $doctor = $this->dataBase->table('doc_users')
+            ->where('user_id', $owner)
+            ->first();
+
+        $model = Doctor::query()
+            ->whereHas('user', function ($relation) use ($doctor) {
+                $relation->where('email', data_get($doctor, 'email'));
+            })
+            ->first();
+
+        if ($model) {
+            return $model->id;
+        }
+
+        return null;
     }
 }

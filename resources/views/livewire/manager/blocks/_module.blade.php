@@ -150,6 +150,7 @@
     @if(isset($patient) && $patient->tasks)
         @include('livewire.manager.blocks._tasks-for-patient')
     @endif
+    @if(!blank($taskForPatient) && $taskForPatient->exists)
     <div class="w-full mt-8">
         <div class="w-full mt-4">
             <input type="text" wire:model.debounce.300ms="searchFile" name="searchFile" id="searchFile" class="block w-full form-control" placeholder="{{ __('global.search_file_placeholder') }}">
@@ -160,12 +161,12 @@
         <div class="w-full mt-8">
             @foreach($this->listsForFields['sections'] as $sectionItem)
                 <button
-                        class="btn btn-secondary @if(data_get($section, 'id') === $sectionItem->id) btn-success @endif"
+                        class="btn btn-secondary @if(data_get($section, 'id') === $sectionItem->id) btn-success @endif mb-3"
                         wire:click.prevent="setSection({{ $sectionItem->id }})"
                 >{{ $sectionItem->name }}</button>
             @endforeach
             <button
-                    class="btn btn-secondary @if(!$section->exists) btn-success @endif"
+                    class="btn btn-secondary @if(!blank($section) && !$section->exists) btn-success @endif mb-3"
                     wire:click.prevent="setSection()"
             >All</button>
             @if (! blank($sectionFiles))
@@ -198,4 +199,5 @@
             @endif
         </div>
     </div>
+    @endif
 </div>
