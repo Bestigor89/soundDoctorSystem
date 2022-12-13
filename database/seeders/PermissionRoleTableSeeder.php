@@ -114,6 +114,7 @@ class PermissionRoleTableSeeder extends Seeder
                 'file_fore_mod_delete',
                 'file_fore_mod_access',
                 'reports',
+                'patients',
             ],
             Role::TITLE_DOCTOR => [
                 'mod_create',
@@ -132,6 +133,7 @@ class PermissionRoleTableSeeder extends Seeder
                 'task_for_patient_delete',
                 'task_for_patient_access',
                 'reports',
+                'patients',
             ],
             Role::TITLE_PATIENT => [
                 'patient',

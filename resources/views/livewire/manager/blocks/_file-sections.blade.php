@@ -1,12 +1,12 @@
 <div class="w-full sm:w-1/2 mt-4">
     @foreach($this->listsForFields['sections'] as $sectionItem)
         <button
-            class="btn btn-secondary @if(data_get($section, 'id') === $sectionItem->id) btn-success @endif"
+            class="btn btn-secondary @if(data_get($section, 'id') === $sectionItem->id) btn-success @endif mb-3"
             wire:click.prevent="setSection({{ $sectionItem->id }})"
         >{{ $sectionItem->name }}</button>
     @endforeach
     <button
-        class="btn btn-secondary @if(!$section->exists) btn-success @endif"
+        class="btn btn-secondary @if(!blank($section) && !$section->exists) btn-success @endif mb-3"
         wire:click.prevent="setSection()"
     >All</button>
     @if (! blank($sectionFiles))

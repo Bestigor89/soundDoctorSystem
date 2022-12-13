@@ -33,7 +33,7 @@ return [
 
     'file_for_mods' => [
         'labels' => [
-            'label' => 'Список файлов для модуля',
+            'label' => 'Список файлов для процедуры',
             'file_list_empty' => 'Список файлов пуст...',
             'already_attached' => 'Файл уже добавлен',
         ],

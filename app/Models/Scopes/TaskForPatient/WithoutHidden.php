@@ -18,7 +18,7 @@ class WithoutHidden implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->where('status', '<>', TaskForPatientStatusEnum::HIDDEN);
+        return $builder->where('task_for_patients.status', '<>', TaskForPatientStatusEnum::HIDDEN);
     }
 
 }

@@ -11,7 +11,7 @@ class PatientController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('patient'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('patients'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.patient.index');
     }

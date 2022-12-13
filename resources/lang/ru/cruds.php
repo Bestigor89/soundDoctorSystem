@@ -210,6 +210,7 @@ return [
             'status'            => 'Статус',
             'status_helper'     => ' ',
             'date_start' => 'Дата начала',
+            'date_end' => 'До окончания',
         ],
         'status' => [
             \App\Enums\TaskForPatientStatusEnum::IN_PROGRESS => 'Не выполнен',

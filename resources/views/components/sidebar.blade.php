@@ -35,10 +35,17 @@
 
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
+                    @if(Auth::user()->hasRole(\App\Models\Role::TITLE_ADMIN))
                     <a href="{{ route("admin.home") }}" class="{{ request()->is("admin") ? "sidebar-nav-active" : "sidebar-nav" }}">
                         <i class="fas fa-tv"></i>
                         {{ trans('global.dashboard') }}
                     </a>
+                    @else
+                    <a href="{{ route("patient.profile") }}" class="{{ request()->is("patient") ? "sidebar-nav-active" : "sidebar-nav" }}">
+                        <i class="fas fa-tv"></i>
+                        {{ trans('global.dashboard') }}
+                    </a>
+                    @endif
                 </li>
 
                 @can('user_management_access')
