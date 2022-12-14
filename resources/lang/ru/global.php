@@ -21,6 +21,7 @@ return [
     'list'                           => 'Список',
     'login'                          => 'Войти',
     'login_email'                    => 'Электронная почта',
+    'login_name' => 'Логин',
     'login_password'                 => 'Пароль',
     'login_password_confirmation'    => 'Новый пароль еще раз',
     'logout'                         => 'Выйти',
@@ -327,4 +328,5 @@ return [
     'search_file_placeholder' => 'Поиск файлов по названию',
     'task_show' => 'Здача - :task',
     'task_finished' => 'Задание выполнено',
+    'create_procedure' => 'Создать процедуру',
 ];

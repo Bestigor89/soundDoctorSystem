@@ -57,8 +57,8 @@
                             @include('components.table.sort', ['field' => 'mode.name'])
                         </th>
                         <th>
-                            {{ trans('cruds.taskForPatient.fields.mode') }}
-                            @include('components.table.sort', ['field' => 'mode.name'])
+                            {{ trans('cruds.taskForPatient.fields.status') }}
+                            @include('components.table.sort', ['field' => 'taskForPatient.status'])
                         </th>
                         <th>
                             {{ trans('cruds.taskForPatient.fields.date_start') }}

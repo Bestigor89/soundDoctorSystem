@@ -37,6 +37,6 @@ class ShowTask extends Component
             'status' => TaskForPatientStatusEnum::FINISHED,
         ])->save();
 
-        session()->flash('message', trans('global.task_finished'));
+        session()->flash('status', trans('global.task_finished'));
     }
 }

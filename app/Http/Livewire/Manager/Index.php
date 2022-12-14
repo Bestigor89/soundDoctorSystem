@@ -180,7 +180,7 @@ class Index extends Component
         $this->validate();
 
         $cost = Cost::getActive();
-        $this->taskForPatient->cost_id = $cost->id;
+        $this->taskForPatient->cost_id = $cost ? $cost->id : null;
         $this->taskForPatient->pacient_id = $this->patient->id;
         $this->taskForPatient->mode_id = $this->mod->id;
         $this->taskForPatient->status = TaskForPatientStatusEnum::IN_PROGRESS;
@@ -312,7 +312,9 @@ class Index extends Component
             }
         }
 
-        $this->files = $this->mod->load('files');
+        $this->mod->load('files');
+
+        $this->files = $this->mod->files;
     }
 
     /**

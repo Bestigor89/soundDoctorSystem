@@ -13,7 +13,7 @@
                     </div>
                     <div class="w-full sm:w-1/4 text-right">
                         <div class="form-group {{ $errors->has('date_start') ? 'invalid' : '' }}">
-                            <x-date-picker id="date_start" name="date_start" wire:model="date_start" placeholder="{{ trans('cruds.taskForPatient.fields.date_start') }}" />
+                            <x-date-picker id="date_start" name="date_start" wire:model="date_start" placeholder="{{ trans('cruds.taskForPatient.fields.date_start') }}" disabled />
                             <div class="validation-message">
                                 {{ $errors->first('date_start') }}
                             </div>

@@ -17,7 +17,7 @@
     @endpush
     @if(!blank($searchModule))
         <button class="btn btn-indigo mt-2" type="button" wire:click.prevent="$emit('saveModule')">
-            {{ trans('models.mod.actions.create') }}
+            {{ trans('global.create_procedure') }}
         </button>
     @endif
     @if(isset($moduleList) && !blank($moduleList))
