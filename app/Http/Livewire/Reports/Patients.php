@@ -27,7 +27,7 @@ class Patients extends Component
                 return $builder->where('doctors.user_id', $user->id);
             })
             ->where('task_for_patients.status', '=', TaskForPatientStatusEnum::FINISHED)
-            ->groupBy('year','month', 'patients.id', 'doctors.id');
+            ->groupBy('year','month', 'patients.id', 'doctors.id', 'patients.name', 'doctors.name');
 
         $items = $query->get();
 
